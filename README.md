@@ -2,10 +2,15 @@
 
 Smart Agriculture Frontend is a responsive and intuitive web application designed to manage and monitor agricultural operations. Built with **Angular 19**, this frontend seamlessly integrates with the **Smart Agriculture Backend** to visualize data, manage resources, and gain insights into soil conditions, weather patterns, and more.
 
+
+
 ## 🌐 Live Demo
 
 Experience the live version of the application here:  
 [Smart Agriculture Web App](https://smartagriculturee.netlify.app/)
+
+
+
 
 ## 🧠 Overview
 
@@ -19,6 +24,9 @@ Key highlights of the application include:
 - **API Integration:** Smooth interaction with backend services to manage farms, fields, and monitor environmental factors.
 - **Data Visualization:** Uses **Chart.js** for effective display of agricultural metrics and insights.
 
+
+
+
 ## 🚀 Features
 
 - **🔑 User Authentication:** Secure login and registration to control user access.  
@@ -28,31 +36,6 @@ Key highlights of the application include:
 - **🌦️ Weather Insights:** Display weather information tailored to your fields (integrated with backend).  
 - **📱 Responsive UI:** Optimized for all devices, ensuring a consistent experience on desktops, tablets, and mobile devices.
 
-## 📁 Project Structure
-
-The project follows the Angular CLI structure, which is organized as follows:
-
-/src
-│
-├── app/ # Core application module and components
-│ ├── component/ # Feature components (dashboard, farm, login, etc.)
-│ ├── services/ # Angular services for API calls and business logic
-│ ├── app.component.* # Root application component
-│ ├── app.config.ts # Application configuration
-│ ├── app.module.ts # Main application module definition
-│ └── app.routes.ts # Application routing configuration
-│
-├── environments/ # Environment-specific configurations (dev, prod)
-│ ├── environment.ts
-│ └── environment.development.ts
-│
-├── index.html # Main HTML entry point
-├── main.ts # Main bootstrap script for the application
-└── styles.css # Global CSS styles
-
-angular.json # Angular CLI configuration
-package.json # Project dependencies and scripts
-tsconfig.json # TypeScript compiler configuration
 
 
 ## 🔗 API Integration
@@ -116,10 +99,4 @@ Follow these instructions to set up and run the application locally:
     The build artifacts will be stored in the `dist/` directory.
 
 ---
-
-### Icon Changes:
-
-- **✅** (Check mark) has been replaced with **🔑** (Key) for security/authentication features.
-- **🚀** (Rocket) has been replaced with **📊** (Bar chart) for features like data insights and metrics.
-- **🧰** (Toolbox) has been replaced with **🔧** (Wrench) for setup or configuration instructions.
 
