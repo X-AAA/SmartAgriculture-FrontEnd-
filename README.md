@@ -1,4 +1,4 @@
-🌿 Smart Agriculture Frontend
+# 🌿 Smart Agriculture Frontend
 
 Smart Agriculture Frontend is a responsive and intuitive web application designed to manage and monitor agricultural operations. Built with **Angular 19**, this frontend seamlessly integrates with the **Smart Agriculture Backend** to visualize data, manage resources, and gain insights into soil conditions, weather patterns, and more.
 
