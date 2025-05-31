@@ -4,6 +4,8 @@ Smart Agriculture Frontend is a responsive and intuitive web application designe
 
 
 
+
+
 ## 🌐 Live Demo
 
 Experience the live version of the application here:  
@@ -11,6 +13,7 @@ Experience the live version of the application here:
 
 
 
+ 
 
 ## 🧠 Overview
 
@@ -27,6 +30,7 @@ Key highlights of the application include:
 
 
 
+
 ## 🚀 Features
 
 - **🔑 User Authentication:** Secure login and registration to control user access.  
@@ -38,11 +42,17 @@ Key highlights of the application include:
 
 
 
+
+
 ## 🔗 API Integration
 
 The frontend communicates with the **Smart Agriculture Backend API** to fetch and manipulate data. All backend interactions are encapsulated within services in the `src/app/services` directory.
 
 - **Backend API Documentation (Swagger):** [Swagger Documentation](https://smartagriculture-api-dev-gkbkhpc9cqaretc3.israelcentral-01.azurewebsites.net/swagger/index.html)
+
+
+
+
 
 ## 🧰 Technologies
 
