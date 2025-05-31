@@ -1,0 +1,27 @@
+<div class="farm-page">
+  <div *ngIf="loading" class="loading">
+    Loading farm information...
+  </div>
+
+  <div *ngIf="error" class="error">
+    {{ error }}
+  </div>
+
+  <div *ngIf="farmUser && !loading" class="farm-info">
+    <h2>{{ farmUser.name }}'s Farm</h2>
+    
+    <div class="farm-details">
+      <h3>Farm Details</h3>
+      <p><strong>Farm Name:</strong> {{ farmUser.farmDetails.farmName }}</p>
+      <p><strong>Location:</strong> {{ farmUser.farmDetails.location }}</p>
+      <p><strong>Size:</strong> {{ farmUser.farmDetails.size }} acres</p>
+      
+      <div class="crops-section">
+        <h3>Crops</h3>
+        <ul>
+          <li *ngFor="let crop of farmUser.farmDetails.crops">{{ crop }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

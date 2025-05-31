@@ -1,0 +1,252 @@
+
+
+/* Page Background - Matching HomePage Hero */
+.signup-page {
+  min-height: 100vh;
+  background-image: url(/Cover.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+}
+
+.signup-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #344814, #779e43);
+  opacity: 0.2;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Signup Container & Card - Matching HomePage Card Style */
+.signup-container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  min-height: calc(100vh - 4rem); /* Account for padding */
+}
+
+.signup-card {
+  background-color: white;
+  border-radius: 0.5rem; /* Matching HomePage cards */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Matching HomePage card shadow */
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
+  transition: all 0.3s ease;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.signup-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Logo - Matching HomePage Logo */
+.logo-container {
+  margin-bottom: 2rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-icon {
+  font-size: 2rem;
+  color: #759a3b;
+  margin-right: 0.5rem;
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  color: #759a3b;
+  font-weight: bold;
+  margin: 0;
+}
+
+.signup-form {
+  width: 100%;
+}
+
+/* Input Fields - Matching HomePage Form Style */
+.input-box {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: #fff;
+  color: #333;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-box:focus {
+  outline: none;
+  border-color: #759a3b; /* Primary Green */
+  box-shadow: 0 0 0 3px rgba(117, 154, 59, 0.2);
+}
+
+.input-box::placeholder {
+  color: #888;
+  opacity: 1;
+}
+
+/* Date input styling */
+input[type="date"] {
+  color: #333;
+}
+
+.date-label {
+  font-size: 14px;
+  color: #888;
+  margin-top: 4px;
+  display: block;
+}
+
+/* Bootstrap Button Overrides - Matching HomePage Button Styles */
+.btn-primary {
+  background-color: #759a3b !important;
+  border-color: #759a3b !important;
+  color: white;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 12px;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  background-color: #779e43 !important;
+  border-color: #779e43 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn-outline-primary {
+  background-color: white;
+  border-color: #759a3b !important;
+  color: #759a3b !important;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus,
+.btn-outline-primary:active {
+  background-color: #f8f8f8 !important;
+  color: #759a3b !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.btn-link {
+  color: #759a3b;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 10px;
+}
+
+.btn-link:hover,
+.btn-link:focus {
+  color: #5a7a2d;
+  text-decoration: underline;
+}
+
+/* Additional Button Styles */
+.btn-signup {
+  width: 100%;
+   padding: 12px 14px;
+   
+}
+
+/* Divider */
+.divider {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 0.5rem 0;
+}
+
+.divider-line {
+  flex-grow: 1;
+  height: 1px;
+  background-color: #ddd;
+}
+
+.divider-text {
+  padding: 0 1rem;
+  color: #888;
+  font-size: 14px;
+}
+
+/* Social Login Buttons */
+.social-signup {
+  width: 100%;
+}
+
+.btn-social {
+  flex: 1;
+  gap: 8px;
+}
+
+/* Login Prompt */
+.login-prompt {
+  color: #555;
+  font-size: 14px;
+  margin-top: 1.5rem;
+}
+
+.login-link {
+  color: #759a3b; /* Primary Green */
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.login-link:hover {
+  text-decoration: underline;
+  color: #5a7a2d;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .signup-page {
+    padding: 1rem;
+  }
+
+  .signup-container {
+    min-height: 100vh;
+  }
+
+  .signup-card {
+    width: 100%;
+    max-width: none;
+    padding: 2rem 1.5rem;
+    border-radius: 0.5rem;
+  }
+
+  .logo-text {
+    font-size: 1.3rem;
+  }
+
+  .social-signup {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+}

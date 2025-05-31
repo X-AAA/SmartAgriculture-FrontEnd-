@@ -1,0 +1,85 @@
+<div class="container-fluid signup-page p-0">
+  <div class="signup-container d-flex justify-content-center align-items-center">
+    <div class="signup-card">
+      
+      <div class="logo-container text-center mb-4">
+        <div class="logo">
+          <i class="fas fa-leaf logo-icon"></i>
+          <h1 class="logo-text">Smart Agriculture</h1>
+        </div>
+      </div>
+
+      <div class="signup-form">
+        <!-- Using Reactive Forms: [formGroup] and formControlName -->
+        <form class="d-flex flex-column" [formGroup]="registerForm!" (ngSubmit)="onSubmit()">
+          <div class="form-group mb-3">
+            <!-- Use formControlName for binding -->
+            <input class="input-box form-control" type="text" id="firstName" name="firstName" placeholder="First Name" formControlName="firstName">
+            <!-- Reactive Forms validation -->
+            <div *ngIf="registerForm.get('firstName')?.invalid && (registerForm.get('firstName')?.dirty || registerForm.get('firstName')?.touched)" class="text-danger small mt-1">
+              <span *ngIf="registerForm.get('firstName')?.errors?.['required']">First Name is required.</span>
+            </div>
+          </div>
+          
+          <div class="form-group mb-3">
+            <input class="input-box form-control" type="text" id="lastName" name="lastName" placeholder="Last Name" formControlName="lastName">
+            <div *ngIf="registerForm.get('lastName')?.invalid && (registerForm.get('lastName')?.dirty || registerForm.get('lastName')?.touched)" class="text-danger small mt-1">
+               <span *ngIf="registerForm.get('lastName')?.errors?.['required']">Last Name is required.</span>
+            </div>
+          </div>
+          
+          <div class="form-group mb-3">
+            <input class="input-box form-control" type="email" id="email" name="email" placeholder="Email" formControlName="email">
+            <div *ngIf="registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)" class="text-danger small mt-1">
+              <span *ngIf="registerForm.get('email')?.errors?.['required']">Email is required.</span>
+              <span *ngIf="registerForm.get('email')?.errors?.['email']">Please enter a valid email address.</span>
+            </div>
+          </div>
+          
+          <div class="form-group mb-3">
+            <input class="input-box form-control " type="password" id="password" name="password" placeholder="Password" formControlName="password" >
+             <div *ngIf="registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)" class="text-danger small mt-1 ">
+               <span *ngIf="registerForm.get('password')?.errors?.['required']" >Password is required.</span>
+               <span *ngIf="registerForm.get('password')?.errors?.['minlength']"> must be at least 6 characters long  </span> <br>
+               <span *ngIf="registerForm.get('password')?.errors?.['pattern']">  must contain at least one special character (&#64;!?*.).</span>
+            </div>
+          </div>
+
+          <div class="form-group mb-3">
+            <!-- Bind date input using formControlName -->
+            <input class="input-box form-control" type="date" id="birthDate" name="birthDate" placeholder="mm/dd/yyyy" formControlName="birthDate">
+             <div *ngIf="registerForm.get('birthDate')?.invalid && (registerForm.get('birthDate')?.dirty || registerForm.get('birthDate')?.touched)" class="text-danger small mt-1">
+               <span *ngIf="registerForm.get('birthDate')?.errors?.['required']">Birth Date is required.</span>
+            </div>
+          </div>
+          
+          <!-- Disable button if form is invalid -->
+          <button  type="submit" class="btn btn-primary btn-signup mb-3" [disabled]="registerForm.invalid">SIGN UP</button>
+        </form>
+
+        <div class="divider mb-4">
+          <span class="divider-line"></span>
+          <span class="divider-text">Or</span>
+          <span class="divider-line"></span>
+        </div>
+
+        <div class="social-signup d-flex gap-3 mb-4">
+          <button type="button" class="btn btn-outline-primary btn-social google-btn d-flex justify-content-center align-items-center">
+            <i class="fab fa-google me-2"></i>
+            <span>GOOGLE</span>
+          </button>
+
+          <button type="button" class="btn btn-outline-primary btn-social apple-btn d-flex justify-content-center align-items-center">
+            <i class="fab fa-apple me-2"></i>
+            <span>APPLE</span>
+          </button>
+        </div>
+
+        <div class="login-prompt text-center">
+          <!-- Use Angular routerLink for navigation -->
+          <p class="mb-0">Already have an account? <a routerLink="/login-page" class="login-link">LOGIN</a></p> 
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

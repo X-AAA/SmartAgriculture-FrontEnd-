@@ -1,0 +1,174 @@
+<!-- home-page.component.html -->
+<!-- Angular Home Page Template -->
+
+<!-- Header Navigation -->
+
+<div class="container-fluid home-page-container">
+<header class="header" id="mainHeader">
+  <div class="header-left">
+    <div class="logo">
+      <i class="fas fa-leaf logo-icon"></i>
+      <h1 class="logo-text">Smart Agriculture</h1>
+    </div>
+  </div>
+  <div class="header-center">
+    <nav class="nav-links" [class.active]="isMenuOpen" id="navLinks">
+      <a href="#mission" (click)="closeMenu()">OUR MISSION</a>
+      <a href="#services" (click)="closeMenu()">OUR SERVICES</a>
+      <a href="#blog" (click)="closeMenu()">BLOG</a>
+
+      <div class="mobile-auth">
+        <a routerLink="/login-page" class=" btn-login">LOGIN</a>
+        <a routerLink="/signup-page" class=" btn-signup">SIGN UP</a>
+      </div>
+    </nav>
+  </div>
+  <div class="header-right">
+    <a routerLink="/login-page" class=" btn-login">LOGIN</a>
+    <a routerLink="/signup-page" class=" btn-signup">SIGN UP</a>
+  </div>
+  <div class="hamburger" [class.active]="isMenuOpen" (click)="toggleMenu()" tabindex="0" (keydown.enter)="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</header>
+
+<!-- Hero Section -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <h1>Revolutionizing Agriculture Through Technology</h1>
+      <p>Discover how our smart farming solutions can help you increase yields, reduce costs, and implement sustainable practices for a more profitable and environmentally friendly operation.</p>
+      <div class="cta-buttons">
+        <a href="#services" class="btn btn-explore">Explore Solutions</a>
+        <a href="#mission" class="btn btn-learn">Learn More</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Mission Section -->
+<section class="section" id="mission">
+  <div class="container">
+    <h2>Our Agricultural Mission</h2>
+    <div class="mission-content">
+      <div class="mission-text">
+        <p>At Smart Agriculture, we use AI to improve farm productivity and promote sustainable practices. By analyzing data such as soil conditions and weather trends, we help farmers make informed decisions on irrigation, fertilization, and crop planning. Our system adapts continuously with regional data, ensuring accurate, locally relevant recommendations that boost yields and reduce resource waste.</p>
+      </div>
+      <div class="mission-stats">
+        <div class="stat-item">
+          <i class="fas fa-seedling"></i>
+          <h3>Empower Farmers</h3>
+        </div>
+        <div class="stat-item">
+          <i class="fas fa-chart-line"></i>
+          <h3>Boost Agricultural Productivity</h3>
+        </div>
+        <div class="stat-item">
+          <i class="fas fa-tint-slash"></i>
+          <h3>Promote Sustainable Practices</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Services Section -->
+<section class="section" id="services">
+  <div class="container">
+    <h2>Our Services</h2>
+    <p class="section-intro">We offer comprehensive solutions designed to revolutionize your farming operations through cutting-edge technology and sustainable practices.</p>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon"><i class="fas fa-chart-line"></i></div>
+        <h3>Precision Farming</h3>
+        <p>Leverage data-driven insights from soil sensors, weather stations, and satellite imagery to optimize crop yields and resource allocation with pinpoint accuracy.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i class="fas fa-brands fa-pagelines"></i></div>
+        <h3>Sustainable Practices</h3>
+        <p>Implement eco-friendly farming techniques that preserve soil health, enhance biodiversity, and reduce your carbon footprint while maintaining profitability.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i class="fas fa-tasks"></i></div>
+        <h3>Farm Management</h3>
+        <p>Streamline operations with our comprehensive management platform that tracks everything from inventory and equipment maintenance to labor allocation and crop scheduling.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i class="fas fa-robot"></i></div>
+        <h3>AI Data Analysis</h3>
+        <p>Our advanced AI algorithms analyze your field data in real-time, providing actionable insights for optimal crop management and early problem detection.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Blog Section -->
+<section class="section" id="blog">
+  <div class="container">
+    <h2>Latest Insights</h2>
+    <p class="section-intro">Stay updated with the latest trends, research, and success stories in smart agriculture to keep your farming operation at the cutting edge.</p>
+    <div class="blog-grid">
+      <div class="blog-card" *ngFor="let blog of visibleBlogs">
+        <div class="blog-image">
+          <i class="fas" [ngClass]="blog.icon + ' blog-icon'"></i>
+        </div>
+        <h3>{{ blog.title }}</h3>
+        <p class="date">{{ blog.date }}</p>
+        <a [href]="blog.link" target="_blank" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+    <div class="see-more-container "  *ngIf="!showAllBlogs">
+      <button class="see-more-btn" (click)="showAllBlogs = true">See More Articles</button>
+    </div>
+    <div class="see-less-container" *ngIf="showAllBlogs">
+      <button class="see-less-btn" (click)="showAllBlogs = false">Show Less</button>
+    </div>
+  </div>
+</section>
+
+<!-- Footer Section -->
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-column">
+      <div class="footer-logo">
+        <i class="fas fa-leaf logo-icon"></i>
+        <h3 class="logo-text">Smart Agriculture</h3>
+      </div>
+      <p class="footer-description">Technology for more productivity</p>
+    </div>
+    <div class="footer-column">
+      <h3>Company</h3>
+      <p class="company-name">Smart Agriculture</p>
+      <p>Agritech Valley, California.</p>
+      <div class="company-contact">
+        <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+        <p><i class="fas fa-envelope"></i> info&#64;smartagriculture.com</p>
+      </div>
+    </div>
+    <div class="footer-column">
+      <h3>Quick Links</h3>
+      <ul class="footer-links">
+        <li><a href="#mission">About Us</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#blog">Blog</a></li>
+        <li><a href="#">Privacy</a></li>
+        <li><a href="#">Terms & Conditions</a></li>
+      </ul>
+    </div>
+    <div class="footer-column">
+      <h3>Social Media</h3>
+      <div class="social-links">
+        <a href="#" class="social-link"><i class="fab fa-facebook"></i> Facebook</a>
+        <a href="#" class="social-link"><i class="fab fa-linkedin"></i> LinkedIn</a>
+        <a href="#" class="social-link"><i class="fab fa-twitter"></i> Twitter</a>
+        <a href="#" class="social-link"><i class="fab fa-instagram"></i> Instagram</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2025 Smart Agriculture. All rights reserved.</p>
+  </div>
+</footer>
+</div>

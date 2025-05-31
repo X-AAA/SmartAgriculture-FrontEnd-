@@ -1,0 +1,954 @@
+:host {
+  --farm-body-bg: #f0f2f5; /* Even less stark white background */
+  --farm-card-bg: #ffffff; /* Card background */
+  --farm-card-bg-hover: #f8f9fa; /* Slightly darker for hover */
+  --farm-card-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+  --farm-text-primary: #2c3e50; /* Darker text for better contrast */
+  --farm-text-secondary: #6c757d; /* Muted text */
+  --farm-text-on-dark-bg: #ebfcec; /* Text on dark elements */
+  --farm-accent-color: #759a3b; /* Green accent - updated to match logo */
+  --farm-border-color: #e9ecef; /* Light border */
+  --farm-delete-hover-color: #ff4d4d;
+  --farm-chart-colors-1: #759a3b;
+  --farm-chart-colors-2: #8BC34A;
+  --farm-chart-colors-3: #CDDC39;
+  --farm-chart-colors-4: #FFC107;
+  --farm-chart-colors-5: #FF9800;
+  --farm-stat-card-bg: rgba(117, 154, 59, 0.1); /* As requested by user, updated to match logo color */
+
+  /* Original specific colors if needed, map them to variables */
+  --farm-original-card-bg: #47614c;
+  --farm-original-card-bg-hover: #354c39;
+  --farm-original-card-summary-bg: #c7e4cbc4;
+  --farm-original-container-bg: #e7f5e891;
+  --farm-original-text-h2: #213421fa;
+}
+
+/* Apply dark theme variables when body has the attribute */
+/* Note: This relies on the TS code setting the attribute on the body */
+:host-context(body[data-bs-theme="dark"]) {
+  --farm-body-bg: #1a1d21; /* Darker background */
+  --farm-card-bg: #282c34; /* Dark card background */
+  --farm-card-bg-hover: #32363e; /* Slightly lighter for hover */
+  --farm-card-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Darker shadow */
+  --farm-text-primary: #e9ecef; /* Light text */
+  --farm-text-secondary: #adb5bd; /* Muted light text */
+  --farm-text-on-dark-bg: #ebfcec; /* Text on dark elements (remains same) */
+  --farm-accent-color: #8ab547; /* Light green accent - updated to match logo */
+  --farm-border-color: #40454a; /* Dark border */
+  --farm-delete-hover-color: #ff4d4d; /* Lighter red for dark mode */
+  --farm-stat-card-bg: rgba(117, 154, 59, 0.15); /* Slightly more visible in dark mode */
+
+  /* Override original specific colors for dark mode if needed */
+  --farm-original-card-bg: #282c34; /* Match dark card bg */
+  --farm-original-card-bg-hover: #32363e; /* Match dark card hover */
+  --farm-original-card-summary-bg: rgba(138, 181, 71, 0.15); /* Translucent light green */
+  --farm-original-container-bg: rgba(26, 29, 33, 0.8); /* Darker translucent */
+  --farm-original-text-h2: #8ab547; /* Match accent */
+}
+
+/* Base Styles - Applied within the component scope */
+/* Note: Global body styles are omitted as they should be in styles.css */
+
+/* App Container */
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--farm-body-bg);
+  color: var(--farm-text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+}
+.scroll-cards{
+  scroll-behavior: smooth;
+overflow: hidden;
+}
+
+.farm-card{
+min-width:22rem;
+
+}
+
+/* Top Navigation */
+.top-nav-section{
+  position: sticky;
+  top: 0;
+  z-index: 900;
+  /* margin: 15px 15px;
+   */
+}
+.top-nav {
+  height: 70px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  background-color: var(--farm-card-bg);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+/*   border-radius: 3rem; */
+
+}
+
+/* Logo styling */
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo-icon {
+  font-size: 2rem;
+  color: #759a3b;
+  margin-right: 0.5rem;
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  color: #759a3b;
+  font-weight: bold;
+  margin: 0;
+}
+
+.theme-toggle {
+  position: relative;
+}
+
+/* Range input thumb styling */
+input[type="range"]::-webkit-slider-thumb {
+  background: rgb(22, 122, 75);
+}
+
+/* Theme Toggle Button */
+/* Using ::ng-deep temporarily if #themeToggle ID is crucial and encapsulation interferes */
+/* A better approach is to use a class instead of ID for the button */
+.theme-toggle button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: none;
+  color: var(--farm-text-secondary);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.theme-toggle button:hover {
+  background-color: var(--farm-card-bg-hover);
+  color: var(--farm-accent-color);
+}
+
+.theme-toggle button i {
+  font-size: 1.2rem;
+}
+
+/* Notification dropdown styling */
+.notification-bell {
+  position: relative;
+  cursor: pointer;
+}
+
+.notification-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+  background-color: transparent;
+}
+
+.notification-btn:hover {
+  background-color: var(--farm-card-bg-hover);
+}
+
+.notification-btn i {
+  font-size: 1.2rem;
+  color: var(--farm-text-secondary);
+}
+
+.notification-btn .badge {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: var(--farm-accent-color);
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Ensure dropdown menus are styled correctly */
+/* Using ::ng-deep because Bootstrap appends menus to body by default */
+::ng-deep .notification-dropdown {
+  width: 300px;
+  padding: 0;
+  border-radius: 10px;
+  border: 1px solid var(--farm-border-color);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  background-color: var(--farm-card-bg);
+  color: var(--farm-text-primary);
+}
+
+::ng-deep .notification-dropdown .dropdown-header {
+  padding: 12px 16px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--farm-border-color);
+  color: var(--farm-text-primary);
+}
+
+::ng-deep .notification-dropdown .dropdown-item {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--farm-border-color);
+  transition: background-color 0.2s ease;
+  color: var(--farm-text-secondary);
+}
+
+::ng-deep .notification-dropdown .dropdown-item:last-child {
+  border-bottom: none;
+}
+
+::ng-deep .notification-dropdown .dropdown-item:hover {
+  background-color: var(--farm-card-bg-hover);
+  color: var(--farm-text-primary);
+}
+
+::ng-deep .notification-dropdown .dropdown-divider {
+  margin: 0;
+  border-top-color: var(--farm-border-color);
+}
+
+/* Profile dropdown styling */
+.user-profile {
+  position: relative;
+}
+
+.profile-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  padding: 0;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+
+.profile-btn:hover {
+  transform: scale(1.05);
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Ensure dropdown menus are styled correctly */
+/* Using ::ng-deep because Bootstrap appends menus to body by default */
+::ng-deep .profile-dropdown {
+  min-width: 200px;
+  padding: 0;
+  border-radius: 10px;
+  border: 1px solid var(--farm-border-color);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  background-color: var(--farm-card-bg);
+  color: var(--farm-text-primary);
+}
+
+::ng-deep .profile-dropdown .dropdown-item {
+  padding: 12px 16px;
+  transition: background-color 0.2s ease;
+  color: var(--farm-text-secondary);
+}
+
+::ng-deep .profile-dropdown .dropdown-item:hover {
+  background-color: var(--farm-card-bg-hover);
+  color: var(--farm-text-primary);
+}
+
+::ng-deep .profile-dropdown .dropdown-divider {
+  margin: 0;
+  border-top-color: var(--farm-border-color);
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background-color: var(--farm-card-bg-hover);
+  border-radius: 20px;
+  padding: 8px 16px;
+  transition: all 0.2s ease;
+}
+
+.search-bar:focus-within {
+  box-shadow: 0 0 0 2px rgba(117, 154, 59, 0.25);
+}
+
+.search-bar i {
+  color: var(--farm-text-secondary);
+  margin-right: 8px;
+}
+
+.search-bar input {
+  border: none;
+  background: transparent;
+  outline: none;
+  color: var(--farm-text-primary);
+  width: 180px;
+  font-size: 0.9rem;
+}
+
+.search-bar input::placeholder {
+  color: var(--farm-text-secondary);
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  min-height: calc(100vh - 70px);
+}
+
+/* Section Titles */
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--farm-text-primary);
+}
+
+/* Welcome Section */
+.welcome-section {
+  padding: 24px;
+  background-color: var(--farm-card-bg);
+  border-radius: 16px;
+  box-shadow: var(--farm-card-shadow);
+  /* margin-bottom: 24px; /* Removed as wrapper div handles margin */
+  border: 1px solid var(--farm-border-color);
+}
+
+/* Stat Cards */
+.stat-card {
+  background-color: var(--farm-stat-card-bg);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  box-shadow: var(--farm-card-shadow);
+  height: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(117, 154, 59, 0.2);
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.stat-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  background-color: rgba(117, 154, 59, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+}
+
+.stat-icon i {
+  font-size: 1.5rem;
+  color: var(--farm-accent-color);
+}
+
+.stat-info h3 {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--farm-text-primary);
+}
+
+.stat-info p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--farm-text-secondary);
+}
+
+/* Weather Widget */
+.weather-widget {
+  background-color: var(--farm-card-bg);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--farm-card-shadow);
+  height: 100%;
+  border: 1px solid var(--farm-border-color);
+}
+
+.weather-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--farm-border-color);
+}
+
+.weather-header h5 {
+  margin: 0;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.weather-header span {
+  font-size: 0.9rem;
+  color: var(--farm-text-secondary);
+}
+
+.weather-content {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.current-weather {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.current-weather i {
+  font-size: 3rem;
+  color: #FFC107;
+  margin-bottom: 10px;
+}
+
+.temp {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.weather-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.detail {
+  display: flex;
+  align-items: center;
+}
+
+.detail i {
+  width: 20px;
+  margin-right: 10px;
+  color: var(--farm-text-secondary);
+}
+
+.weather-forecast {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 20px;
+  border-top: 1px solid var(--farm-border-color);
+}
+
+.forecast-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.forecast-day i {
+  margin: 10px 0;
+  color: #FFC107;
+}
+
+/* Chart Container */
+.chart-container {
+  background-color: var(--farm-card-bg);
+  border-radius: 16px;
+  box-shadow: var(--farm-card-shadow);
+  /* margin-bottom: 24px; /* Removed as wrapper div handles margin */
+  overflow: hidden;
+  border: 1px solid var(--farm-border-color);
+}
+
+.chart-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--farm-border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chart-header h5 {
+  margin: 0;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.chart-actions button {
+  font-size: 0.85rem;
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+
+.chart-actions button.active {
+  background-color: var(--farm-accent-color);
+  color: white;
+  border-color: var(--farm-accent-color);
+}
+
+.chart-body {
+  padding: 20px;
+  height: 300px;
+}
+
+/* Farms Section */
+.farms-section {
+  /* margin-bottom: 24px; /* Removed as wrapper div handles margin */
+}
+
+.section-header {
+  margin-bottom: 20px;
+}
+
+.section-actions {
+  display: flex;
+  align-items: center;
+}
+
+.section-actions button {
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.section-actions .btn-primary {
+  background-color: var(--farm-accent-color);
+  border-color: var(--farm-accent-color);
+}
+
+.section-actions .btn-primary:hover {
+  background-color: #5f7e2f;
+  border-color: #5f7e2f;
+}
+
+/* Farm Card */
+.farm-card {
+  background: var(--farm-original-card-bg);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  box-shadow: var(--farm-card-shadow);
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+}
+
+.farm-card:hover {
+  transform: translateY(-5px);
+  background: var(--farm-original-card-bg-hover);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.farm-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px 0;
+}
+
+.farm-status {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-left: 5px;
+}
+
+.farm-status.active {
+  background-color: #4CAF50;
+}
+
+.farm-status.warning {
+  background-color: #FFC107;
+}
+
+.farm-status.danger {
+  background-color: #F44336;
+}
+
+.btn-delete {
+  border: none;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  color: var(--farm-text-on-dark-bg);
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0;
+  font-size: 0.9rem;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-delete:hover {
+  color: var(--farm-delete-hover-color);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.farm-card .card-body {
+  padding: 16px;
+}
+
+.farm-card .card-title {
+  margin-bottom: 16px;
+  color: var(--farm-text-on-dark-bg);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.farm-details {
+  margin-bottom: 16px;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  color: var(--farm-text-on-dark-bg);
+  font-size: 0.9rem;
+}
+
+.detail-item i {
+  width: 20px;
+  margin-right: 8px;
+}
+
+.farm-health {
+  margin-top: 16px;
+}
+
+.health-label {
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+  color: var(--farm-text-on-dark-bg);
+  display: flex;
+  justify-content: space-between;
+}
+
+.progress {
+  height: 8px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  border-radius: 4px;
+}
+
+.health-value {
+  font-size: 0.85rem;
+  text-align: right;
+  margin-top: 6px;
+  color: var(--farm-text-on-dark-bg);
+}
+
+.farm-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.farm-actions button {
+  font-size: 0.85rem;
+  padding: 6px 12px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--farm-text-on-dark-bg);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.farm-actions button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.farm-actions button i {
+  margin-right: 4px;
+}
+
+/* Recent Activities */
+.recent-activities {
+  background-color: var(--farm-card-bg);
+  border-radius: 16px;
+  box-shadow: var(--farm-card-shadow);
+  padding: 24px;
+  border: 1px solid var(--farm-border-color);
+}
+
+.activity-list {
+  margin-top: 16px;
+}
+
+.activity-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 16px;
+  border-radius: 12px;
+  background-color: var(--farm-card-bg-hover);
+  transition: transform 0.2s ease;
+  margin-bottom: 16px;
+  border: 1px solid var(--farm-border-color);
+}
+
+.activity-item:hover {
+  transform: translateX(5px);
+  box-shadow: var(--farm-card-shadow);
+}
+
+.activity-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: rgba(117, 154, 59, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+  flex-shrink: 0;
+}
+
+.activity-icon i {
+  color: var(--farm-accent-color);
+  font-size: 1.2rem;
+}
+
+.activity-content {
+  flex: 1;
+}
+
+.activity-title {
+  font-weight: 600;
+  margin-bottom: 5px;
+  font-size: 1rem;
+}
+
+.activity-details {
+  font-size: 0.9rem;
+  color: var(--farm-text-secondary);
+}
+
+.activity-time {
+  font-size: 0.8rem;
+  color: var(--farm-text-secondary);
+  margin-top: 6px;
+}
+
+/* Modal Styling */
+/* Using ::ng-deep because Bootstrap modals are often appended to body */
+::ng-deep .modal-content {
+  border-radius: 16px;
+  border: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  background-color: var(--farm-card-bg);
+  color: var(--farm-text-primary);
+}
+
+::ng-deep .modal-header {
+  border-bottom: 1px solid var(--farm-border-color);
+  padding: 16px 24px;
+}
+
+::ng-deep .modal-body {
+  padding: 24px;
+}
+
+::ng-deep .modal-footer {
+  border-top: 1px solid var(--farm-border-color);
+  padding: 16px 24px; /* Adjusted padding for consistency */
+}
+
+::ng-deep .modal-title {
+  font-weight: 600;
+  color: var(--farm-text-primary);
+}
+
+/* Form controls within modals */
+::ng-deep .modal .form-label {
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: var(--farm-text-primary);
+}
+
+::ng-deep .modal .form-control,
+::ng-deep .modal .form-select,
+::ng-deep .modal .form-range {
+  border-radius: 10px;
+  padding: 10px 16px;
+  border: 1px solid var(--farm-border-color);
+  transition: all 0.2s ease;
+  background-color: var(--farm-card-bg); /* Ensure form controls match modal bg */
+  color: var(--farm-text-primary);
+}
+
+::ng-deep .modal .form-control:focus,
+::ng-deep .modal .form-select:focus,
+::ng-deep .modal .form-range:focus {
+  border-color: var(--farm-accent-color);
+  box-shadow: 0 0 0 3px rgba(117, 154, 59, 0.25);
+  background-color: var(--farm-card-bg); /* Maintain background on focus */
+}
+
+/* Specific dark mode overrides for modals (already handled by :host-context) */
+
+
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+  .search-bar input {
+    width: 120px;
+  }
+  .chart-body {
+    height: 250px;
+  }
+
+  
+}
+
+@media (max-width: 768px) {
+  .top-nav {
+    padding: 0 16px;
+}
+/*   .logo-text {
+    display: none;
+  } */
+  .search-bar {
+    display: none; /* Hide search bar */
+  }
+  .welcome-section .row > div:last-child {
+    margin-top: 20px;
+  }
+  .stat-card {
+    padding: 15px;
+  }
+  .stat-info h3 {
+    font-size: 1.5rem;
+  }
+  .weather-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  .weather-forecast {
+    padding: 10px 15px;
+    gap: 10px;
+    overflow-x: auto;
+  }
+
+  .chart-row{
+    gap: 20px;
+  }
+
+
+  .chart-body {
+    height: 200px;
+  }
+  
+  .farm-card .card-title {
+    font-size: 1rem;
+  }
+  .farm-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .farm-actions button {
+    width: 100%;
+  }
+  .activity-item {
+    padding: 12px;
+  }
+
+ 
+}
+
+@media (max-width: 576px) {
+  .top-nav {
+    height: 60px;
+  }
+
+  
+  .notification-bell,
+  .theme-toggle {
+    margin-right: 10px !important;
+  }
+  .user-profile {
+    margin-left: 0;
+  }
+  .welcome-section {
+    padding: 16px;
+  }
+  .section-title {
+    font-size: 1.3rem;
+
+  }
+  .stat-card {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+  .stat-icon {
+    margin-bottom: 10px;
+  }
+  .weather-widget {
+    margin-top: 20px;
+  }
+  .chart-header h5 {
+    font-size: 1rem;
+  }
+  .section-header {
+    flex-direction: row;
+  
+    gap: 10px;
+  }
+  .activity-icon {
+    width: 35px;
+    height: 35px;
+    margin-right: 12px;
+  }
+  .activity-icon i {
+    font-size: 1rem;
+  }
+  .activity-title {
+    font-size: 0.9rem;
+  }
+  .activity-details,
+  .activity-time {
+    font-size: 0.8rem;
+  }
+
+  
+  /* Modal adjustments if needed */
+  ::ng-deep .modal-dialog {
+      margin: 0.5rem;
+  }
+  ::ng-deep .modal-content {
+      border-radius: 10px;
+  }
+  ::ng-deep .modal-body {
+      padding: 16px;
+  }
+  ::ng-deep .modal-footer {
+      padding: 12px 16px;
+  }
+}
+

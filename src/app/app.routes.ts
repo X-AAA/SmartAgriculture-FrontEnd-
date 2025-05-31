@@ -1,3 +1,17 @@
 import { Routes } from '@angular/router';
+import { HomePageComponent } from './component/home-page/home-page.component';
+import { LoginPageComponent } from './component/login-page/login-page.component';
+import { SignupPageComponent } from './component/signup-page/signup-page.component';
+import { DashboardPageComponent } from './component/dashboard-page/dashboard-page.component';
 
-export const routes: Routes = [];
+export const routes: Routes = [
+
+  { path: 'home-page', component: HomePageComponent },
+  { path: 'login-page', component: LoginPageComponent },
+  { path: 'signup-page', component: SignupPageComponent },
+  { path: 'dashboard-page', component: DashboardPageComponent },
+  { path: '**', redirectTo: 'home-page' } 
+
+];
+
+

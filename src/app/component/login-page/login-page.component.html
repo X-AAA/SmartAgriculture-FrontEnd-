@@ -1,0 +1,69 @@
+<div class="container-fluid login-page p-0">
+  <div class="login-container d-flex justify-content-center align-items-center">
+    <div class="login-card">
+      
+      <div class="logo-container text-center mb-4">
+        <div class="logo">
+          <i class="fas fa-leaf logo-icon"></i>
+          <h1 class="logo-text">Smart Agriculture</h1>
+        </div>
+      </div>
+
+      <div class="login-form">
+        <!-- Bind the form to the FormGroup instance in your component -->
+        <form class="d-flex flex-column" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          
+          <div class="form-group mb-3">
+            <!-- Use formControlName to link to the FormControl -->
+            <input class="input-box form-control" type="text" id="username" formControlName="email" placeholder="Email">
+            <!-- Reactive Forms validation message example -->
+            <div *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)" class="text-danger mt-1" style="font-size: 0.8rem;">
+              <div *ngIf="loginForm.get('email')?.errors?.['required']">Email is required.</div>
+              <div *ngIf="loginForm.get('email')?.errors?.['email']">Please enter a valid email address.</div>
+              <!-- Add other validation messages as needed -->
+            </div>
+          </div>
+          
+          <div class="form-group mb-3">
+            <!-- Use formControlName to link to the FormControl -->
+            <input class="input-box form-control" type="password" id="password" formControlName="password" placeholder="Enter your password">
+             <!-- Reactive Forms validation message example -->
+            <div *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)" class="text-danger mt-1" style="font-size: 0.8rem;">
+              <div *ngIf="loginForm.get('password')?.errors?.['required']">Password is required.</div>
+              <!-- Add other validation messages like minlength, pattern etc. -->
+            </div>
+          </div>
+          
+          <!-- Disable button based on the FormGroup's validity -->
+          <button type="submit" class="btn btn-primary btn-login mb-3">LOGIN</button>
+        </form>
+        
+        <!-- These elements remain the same as they are not directly part of the form data binding -->
+        <button type="button" class="btn btn-link btn-forgot mb-4" (click)="onForgotPassword()">Forgot Password?</button>
+
+        <div class="divider mb-4">
+          <span class="divider-line"></span>
+          <span class="divider-text">Or</span>
+          <span class="divider-line"></span>
+        </div>
+
+        <div class="social-login d-flex gap-3 mb-4">
+          <button type="button" class="btn btn-outline-primary btn-social google-btn d-flex justify-content-center align-items-center" (click)="onGoogleLogin()">
+            <i class="fab fa-google me-2"></i>
+            <span>GOOGLE</span>
+          </button>
+
+          <button type="button" class="btn btn-outline-primary btn-social apple-btn d-flex justify-content-center align-items-center" (click)="onAppleLogin()">
+            <i class="fab fa-apple me-2"></i>
+            <span>APPLE</span>
+          </button>
+        </div>
+
+        <div class="signup-prompt text-center">
+          <p class="mb-0">Don't have an account? <a routerLink="/signup-page"  (click)="onSignUp($event)" class="signup-link">SIGN UP</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
