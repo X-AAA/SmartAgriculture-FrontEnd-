@@ -1,6 +1,6 @@
 [build]
   base = "/"
-  publish = "dist"  # or "build" depending on your setup
+  publish = "dist/front-end/browser"  # or "build" depending on your setup
   command = "npm run build"
   functions = "netlify/functions"  # Define where your functions are located
 
