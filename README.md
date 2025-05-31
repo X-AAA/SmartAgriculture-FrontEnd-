@@ -8,8 +8,7 @@ Smart Agriculture Frontend is a responsive and intuitive web application designe
 
 ## 🌐 Live Demo
 
-Experience the live version of the application here:  
-[Smart Agriculture Web App](https://smart-agriculture-green.vercel.app/home-page)
+Experience the live version of the application here:  [Smart Agriculture Web App](https://smart-agriculture-green.vercel.app/home-page)
 
 
 
