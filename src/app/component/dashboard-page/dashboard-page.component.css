@@ -882,10 +882,10 @@ input[type="range"]::-webkit-slider-thumb {
   .top-nav {
     height: 60px;
   }
- .logo-text{
+/*  .logo-text{
     display:none;
   }
-  
+   */
   .notification-bell,
   .theme-toggle {
     margin-right: 10px !important;
