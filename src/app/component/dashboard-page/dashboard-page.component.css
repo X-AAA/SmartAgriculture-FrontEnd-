@@ -831,9 +831,6 @@ input[type="range"]::-webkit-slider-thumb {
     font-size: 1.5rem;
   }
   
-}
-
-@media (max-width: 768px) {
   .top-nav {
     padding: 0 16px;
 }
@@ -881,8 +878,9 @@ input[type="range"]::-webkit-slider-thumb {
     padding: 12px;
   }
 
- 
 }
+
+
 
 @media (max-width: 576px) {
   .top-nav {
