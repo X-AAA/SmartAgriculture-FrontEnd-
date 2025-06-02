@@ -816,13 +816,13 @@ input[type="range"]::-webkit-slider-thumb {
 
 
 /* Responsive Adjustments */
-@media (max-width: 992px) {
-  .search-bar input {
+@media (max-width: 1000px) {
+  /* .search-bar input {
     width: 120px;
   }
   .chart-body {
     height: 250px;
-  }
+  } */
 
   
 }
@@ -882,10 +882,11 @@ input[type="range"]::-webkit-slider-thumb {
   .top-nav {
     height: 60px;
   }
-/*  .logo-text{
+ .logo-text{
+
     display:none;
   }
-   */
+  
   .notification-bell,
   .theme-toggle {
     margin-right: 10px !important;
