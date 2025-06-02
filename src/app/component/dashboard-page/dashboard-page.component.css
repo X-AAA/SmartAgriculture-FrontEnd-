@@ -824,16 +824,13 @@ input[type="range"]::-webkit-slider-thumb {
     height: 250px;
   } */
 
-  
-}
-
-@media (max-width: 768px) {
+ 
   .top-nav {
     padding: 0 16px;
 }
-/*   .logo-text {
+ .logo-text {
     display: none;
-  } */
+  } 
   .search-bar {
     display: none; /* Hide search bar */
   }
