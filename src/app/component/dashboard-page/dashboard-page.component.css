@@ -814,9 +814,14 @@ input[type="range"]::-webkit-slider-thumb {
 /* Specific dark mode overrides for modals (already handled by :host-context) */
 
 
+@media (min-width: 768px) {
+  
+}
+
+
 
 /* Responsive Adjustments */
-@media (max-width: 1000px) {
+@media (min-width: 1000px) {
   /* .search-bar input {
     width: 120px;
   }
