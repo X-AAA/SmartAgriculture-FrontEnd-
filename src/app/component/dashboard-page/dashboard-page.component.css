@@ -823,7 +823,7 @@ input[type="range"]::-webkit-slider-thumb {
 
 
 /* Responsive Adjustments */
-@media (min-width: 1000px) {
+@media (max-width: 1000px) {
   /* .search-bar input {
     width: 120px;
   }
