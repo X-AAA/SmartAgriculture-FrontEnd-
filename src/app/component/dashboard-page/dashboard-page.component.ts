@@ -413,7 +413,7 @@ logout() {
     console.log('Applying filters:', filters);
 
     // Filter the already loaded farms based on the filters
-    this.farms = this.farms.filter(farm =>
+    this.filteredFarms = this.farms.filter(farm =>
         // Check if the farm's health meets the minimum health filter
         (!filters.minHealth || farm.getOverAllStatus()! >= filters.minHealth) &&
         // Check if the farm's size meets the minimum size filter
