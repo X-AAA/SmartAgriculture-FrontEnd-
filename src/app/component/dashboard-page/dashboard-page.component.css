@@ -814,11 +814,7 @@ input[type="range"]::-webkit-slider-thumb {
 /* Specific dark mode overrides for modals (already handled by :host-context) */
 
 
-@media (min-width: 768px) {
-    .col-md-3 {
-        flex: 0 0 auto;
-    }
-}
+
 
 
 
@@ -830,14 +826,17 @@ input[type="range"]::-webkit-slider-thumb {
   .chart-body {
     height: 250px;
   } */
-
  
   .top-nav {
     padding: 0 16px;
 }
- .logo-text {
-    display: none;
-  } 
+ 
+
+.stat-card{
+ .col-md-3 {
+        flex: 0 0 auto;
+    }
+}
   .search-bar {
     display: none; /* Hide search bar */
   }
