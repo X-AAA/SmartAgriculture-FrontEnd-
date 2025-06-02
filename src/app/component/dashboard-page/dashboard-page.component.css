@@ -62,6 +62,10 @@
   line-height: 1.5;
   font-weight: 400;
 }
+
+.farm-cards-container{
+  height: 100px;
+}
 .scroll-cards{
   scroll-behavior: smooth;
 overflow: hidden;
