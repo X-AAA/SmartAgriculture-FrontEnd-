@@ -831,9 +831,7 @@ input[type="range"]::-webkit-slider-thumb {
   .top-nav {
     padding: 0 16px;
 }
-/*   .logo-text {
-    display: none;
-  } */
+
   .search-bar {
     display: none; /* Hide search bar */
   }
@@ -879,7 +877,12 @@ input[type="range"]::-webkit-slider-thumb {
   .activity-item {
     padding: 12px;
   }
-
+ .stat-card {
+    padding: 15px;
+  }
+  .stat-info h3 {
+    font-size: 1.5rem;
+  }
  
 }
 
