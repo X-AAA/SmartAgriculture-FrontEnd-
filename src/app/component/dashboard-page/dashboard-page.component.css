@@ -824,6 +824,12 @@ input[type="range"]::-webkit-slider-thumb {
     height: 250px;
   }
 
+   .stat-card {
+    padding: 15px;
+  }
+  .stat-info h3 {
+    font-size: 1.5rem;
+  }
   
 }
 
@@ -840,12 +846,7 @@ input[type="range"]::-webkit-slider-thumb {
   .welcome-section .row > div:last-child {
     margin-top: 20px;
   }
-  .stat-card {
-    padding: 15px;
-  }
-  .stat-info h3 {
-    font-size: 1.5rem;
-  }
+ 
   .weather-content {
     flex-direction: column;
     align-items: flex-start;
