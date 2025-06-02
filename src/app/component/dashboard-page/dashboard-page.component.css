@@ -815,33 +815,37 @@ input[type="range"]::-webkit-slider-thumb {
 
 
 
-
-
-
 /* Responsive Adjustments */
-@media (max-width: 1000px) {
-  /* .search-bar input {
+@media (max-width: 992px) {
+  .search-bar input {
     width: 120px;
   }
   .chart-body {
     height: 250px;
-  } */
- 
+  }
+
+  
+}
+
+@media (max-width: 768px) {
   .top-nav {
     padding: 0 16px;
 }
- 
-
-.stat-card{
-
-}
+/*   .logo-text {
+    display: none;
+  } */
   .search-bar {
     display: none; /* Hide search bar */
   }
   .welcome-section .row > div:last-child {
     margin-top: 20px;
   }
- 
+  .stat-card {
+    padding: 15px;
+  }
+  .stat-info h3 {
+    font-size: 1.5rem;
+  }
   .weather-content {
     flex-direction: column;
     align-items: flex-start;
@@ -883,10 +887,7 @@ input[type="range"]::-webkit-slider-thumb {
   .top-nav {
     height: 60px;
   }
- .logo-text{
 
-    display:none;
-  }
   
   .notification-bell,
   .theme-toggle {
