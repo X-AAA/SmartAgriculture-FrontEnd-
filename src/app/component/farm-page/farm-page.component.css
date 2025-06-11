@@ -1,72 +1,35 @@
 :host {
+  /* Light Mode Color Palette */
+
   --farm-body-bg: #f0f2f5; /* Even less stark white background */
-  --farm-card-bg: #ffffff; /* Card background */
+  --farm-card-bg: #ffffff;
+  --field-card-bg:#47614c; /* Card background */
   --farm-card-bg-hover: #f8f9fa; /* Slightly darker for hover */
   --farm-card-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Subtle shadow */
   --farm-text-primary: #2c3e50; /* Darker text for better contrast */
   --farm-text-secondary: #6c757d; /* Muted text */
-  --farm-text-on-dark-bg: #ffffff; /* Text on dark elements */
-  --farm-accent-color: #759a3b; /* Green accent - updated to match dashboard */
+  --farm-text-on-dark-bg: #ebfcec; /* Text on dark elements */
+  --farm-accent-color: #759a3b; /* Green accent - updated to match logo */
   --farm-border-color: #e9ecef; /* Light border */
-  --farm-delete-hover-color: #ff4d4d;
-  --farm-chart-colors-1: #759a3b;
-  --farm-chart-colors-2: #8BC34A;
-  --farm-chart-colors-3: #CDDC39;
-  --farm-chart-colors-4: #FFC107;
-  --farm-chart-colors-5: #FF9800;
-  --farm-stat-card-bg: rgba(117, 154, 59, 0.1); /* As requested by user, updated to match logo color */
-
-  /* Field card backgrounds - less green, more varied */
-  --farm-unified-field-bg: rgba(117, 154, 59, 0.8); /* Green to match dashboard */
-  --farm-corn-bg: rgba(31, 62, 36, 0.8); /* Darker green for corn */
-  --farm-soybeans-bg: rgba(60, 79, 24, 0.8); /* Olive green for soybeans */
-  --farm-wheat-bg: rgba(194, 178, 128, 0.8); /* Wheat color */
-  --farm-oats-bg: rgba(215, 198, 154, 0.8); /* Oat color */
-  --farm-barley-bg: rgba(171, 149, 98, 0.8); /* Barley color */
-  --farm-rice-bg: rgba(226, 225, 218, 0.8); /* Rice color */
-  
-  /* Original specific colors if needed, map them to variables */
-  --farm-original-card-bg: rgba(31, 62, 36, 0.8); /* Updated to be more transparent */
-  --farm-original-card-bg-hover: rgba(21, 46, 25, 0.85);
-  --farm-original-card-summary-bg: #c7e4cbc4;
-  --farm-original-container-bg: #e7f5e891;
-  --farm-original-text-h2: #213421fa;
 }
 
 /* Apply dark theme variables when body has the attribute */
-/* Note: This relies on the TS code setting the attribute on the body */
 :host-context(body[data-bs-theme="dark"]) {
-  --farm-body-bg: #1a1d21; /* Darker background */
-  --farm-card-bg: #282c34; /* Dark card background */
-  --farm-card-bg-hover: #32363e; /* Slightly lighter for hover */
-  --farm-card-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Darker shadow */
-  --farm-text-primary: #e9ecef; /* Light text */
-  --farm-text-secondary: #adb5bd; /* Muted light text */
-  --farm-text-on-dark-bg: #ffffff; /* Text on dark elements (remains same) */
-  --farm-accent-color: #8ab547; /* Light green accent - updated to match dashboard */
-  --farm-border-color: #40454a; /* Dark border */
-  --farm-delete-hover-color: #ff4d4d; /* Lighter red for dark mode */
-  --farm-stat-card-bg: rgba(117, 154, 59, 0.15); /* Slightly more visible in dark mode */
+  /* Dark Mode Color Palette */
+    --farm-body-bg: #1a1d21;
+    --farm-card-bg: #282c34;
+    --farm-card-bg-hover: #32363e;
+    --farm-card-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    --farm-text-primary: #e9ecef;
+    --farm-text-secondary: #adb5bd;
+    --farm-text-on-dark-bg: #ebfcec;
+    --farm-accent-color: #8ab547;
+    --farm-border-color: #40454a;
+    --farm-delete-hover-color: #c13a3a;
+    --farm-unified-field-bg: #282c34;
 
-  /* Field card backgrounds for dark mode */
-  --farm-unified-field-bg: rgba(117, 154, 59, 0.9); /* Green to match dashboard */
-  --farm-corn-bg: rgba(31, 62, 36, 0.9);
-  --farm-soybeans-bg: rgba(60, 79, 24, 0.9);
-  --farm-wheat-bg: rgba(154, 142, 102, 0.9);
-  --farm-oats-bg: rgba(171, 158, 123, 0.9);
-  --farm-barley-bg: rgba(137, 119, 78, 0.9);
-  --farm-rice-bg: rgba(180, 180, 174, 0.9);
 
-  /* Override original specific colors for dark mode if needed */
-  --farm-original-card-bg: #282c34; /* Match dark card bg */
-  --farm-original-card-bg-hover: #32363e; /* Match dark card hover */
-  --farm-original-card-summary-bg: rgba(138, 181, 71, 0.15); /* Translucent light green */
-  --farm-original-container-bg: rgba(26, 29, 33, 0.8); /* Darker translucent */
-  --farm-original-text-h2: #eaece8; /* Match accent */
 }
-
-/* Base Styles - Applied within the component scope */
-/* Note: Global body styles are omitted as they should be in styles.css */
 
 /* App Container */
 .app-container {
@@ -79,17 +42,13 @@
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   line-height: 1.5;
   font-weight: 400;
- 
 }
 
 /* Top Navigation */
-.top-nav-section{
+.top-nav {
   position: sticky;
   top: 0;
   z-index: 900;
-}
-
-.top-nav {
   height: 70px;
   padding: 0 24px;
   display: flex;
@@ -97,7 +56,6 @@
   background-color: var(--farm-card-bg);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   width: 100%;
- 
 }
 
 /* Logo styling */
@@ -105,22 +63,16 @@
   display: flex;
   align-items: center;
 }
-
 .logo-icon {
   font-size: 2rem;
-  color: #759a3b; /* Green to match dashboard */
+  color: var(--farm-accent-color);
   margin-right: 0.5rem;
 }
-
 .logo-text {
   font-size: 1.5rem;
-  color: #759a3b; /* Green to match dashboard */
+  color: var(--farm-accent-color);
   font-weight: bold;
   margin: 0;
-}
-
-.theme-toggle {
-  position: relative;
 }
 
 /* Theme Toggle Button */
@@ -137,23 +89,19 @@
   transition: all 0.2s ease;
   cursor: pointer;
 }
-
 .theme-toggle button:hover {
   background-color: var(--farm-card-bg-hover);
   color: var(--farm-accent-color);
 }
-
 .theme-toggle button i {
   font-size: 1.2rem;
 }
 
-/* Notification dropdown styling */
-.notification-bell {
+/* Notification & Profile Dropdowns */
+.notification-bell, .user-profile {
   position: relative;
-  cursor: pointer;
 }
-
-.notification-btn {
+.notification-btn, .profile-btn {
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -163,16 +111,13 @@
   transition: background-color 0.2s ease;
   background-color: transparent;
 }
-
-.notification-btn:hover {
+.notification-btn:hover, .profile-btn:hover {
   background-color: var(--farm-card-bg-hover);
 }
-
 .notification-btn i {
   font-size: 1.2rem;
   color: var(--farm-text-secondary);
 }
-
 .notification-btn .badge {
   position: absolute;
   top: 5px;
@@ -187,198 +132,59 @@
   align-items: center;
   justify-content: center;
 }
-
-.notification-dropdown {
-  width: 300px;
-  padding: 0;
-  border-radius: 10px;
-  border: 1px solid var(--farm-border-color);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  background-color: var(--farm-card-bg);
-  color: var(--farm-text-primary);
-}
-
-.notification-dropdown .dropdown-header {
-  padding: 12px 16px;
-  font-weight: 600;
-  border-bottom: 1px solid var(--farm-border-color);
-  color: var(--farm-text-primary);
-}
-
-.notification-dropdown .dropdown-item {
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--farm-border-color);
-  transition: background-color 0.2s ease;
-  color: var(--farm-text-secondary);
-}
-
-.notification-dropdown .dropdown-item:last-child {
-  border-bottom: none;
-}
-
-.notification-dropdown .dropdown-item:hover {
-  background-color: var(--farm-card-bg-hover);
-  color: var(--farm-text-primary);
-}
-
-.notification-dropdown .dropdown-divider {
-  margin: 0;
-  border-top-color: var(--farm-border-color);
-}
-
-/* Ensure dropdown menus are styled correctly */
-/* Using ::ng-deep because Bootstrap appends menus to body by default */
-::ng-deep .notification-dropdown {
-  width: 300px;
-  padding: 0;
-  border-radius: 10px;
-  border: 1px solid var(--farm-border-color);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  background-color: var(--farm-card-bg);
-  color: var(--farm-text-primary);
-}
-
-::ng-deep .notification-dropdown .dropdown-header {
-  padding: 12px 16px;
-  font-weight: 600;
-  border-bottom: 1px solid var(--farm-border-color);
-  color: var(--farm-text-primary);
-}
-
-::ng-deep .notification-dropdown .dropdown-item {
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--farm-border-color);
-  transition: background-color 0.2s ease;
-  color: var(--farm-text-secondary);
-}
-
-::ng-deep .notification-dropdown .dropdown-item:last-child {
-  border-bottom: none;
-}
-
-::ng-deep .notification-dropdown .dropdown-item:hover {
-  background-color: var(--farm-card-bg-hover);
-  color: var(--farm-text-primary);
-}
-
-::ng-deep .notification-dropdown .dropdown-divider {
-  margin: 0;
-  border-top-color: var(--farm-border-color);
-}
-
-/* Profile dropdown styling */
-.user-profile {
-  position: relative;
-}
-
-.profile-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  padding: 0;
-  overflow: hidden;
-  transition: transform 0.2s ease;
-}
-
-.profile-btn:hover {
-  transform: scale(1.05);
-}
-
 .user-avatar {
   width: 40px;
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
 }
+.profile-btn {
+  padding: 0;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+.profile-btn:hover {
+  transform: scale(1.05);
+}
 
+/* Styling for Bootstrap Dropdown Menus */
+.notification-dropdown, .profile-dropdown {
+  width: 300px;
+  padding: 0;
+  border-radius: 10px;
+  border: 1px solid var(--farm-border-color);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  background-color: var(--farm-card-bg);
+  color: var(--farm-text-primary);
+}
 .profile-dropdown {
   min-width: 200px;
-  padding: 0;
-  border-radius: 10px;
-  border: 1px solid var(--farm-border-color);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  background-color: var(--farm-card-bg);
+}
+.dropdown-header {
+  padding: 12px 16px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--farm-border-color);
   color: var(--farm-text-primary);
 }
-
-.profile-dropdown .dropdown-item {
+.dropdown-item {
   padding: 12px 16px;
+  border-bottom: 1px solid var(--farm-border-color);
   transition: background-color 0.2s ease;
   color: var(--farm-text-secondary);
 }
-
-.profile-dropdown .dropdown-item:hover {
+.dropdown-item:last-child {
+  border-bottom: none;
+}
+.dropdown-item:hover {
   background-color: var(--farm-card-bg-hover);
   color: var(--farm-text-primary);
 }
-
-.profile-dropdown .dropdown-divider {
+.dropdown-divider {
   margin: 0;
   border-top-color: var(--farm-border-color);
 }
 
-/* Ensure dropdown menus are styled correctly */
-/* Using ::ng-deep because Bootstrap appends menus to body by default */
-::ng-deep .profile-dropdown {
-  min-width: 200px;
-  padding: 0;
-  border-radius: 10px;
-  border: 1px solid var(--farm-border-color);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  background-color: var(--farm-card-bg);
-  color: var(--farm-text-primary);
-}
-
-::ng-deep .profile-dropdown .dropdown-item {
-  padding: 12px 16px;
-  transition: background-color 0.2s ease;
-  color: var(--farm-text-secondary);
-}
-
-::ng-deep .profile-dropdown .dropdown-item:hover {
-  background-color: var(--farm-card-bg-hover);
-  color: var(--farm-text-primary);
-}
-
-::ng-deep .profile-dropdown .dropdown-divider {
-  margin: 0;
-  border-top-color: var(--farm-border-color);
-}
-
-.search-bar {
-  display: flex;
-  align-items: center;
-  background-color: var(--farm-card-bg-hover);
-  border-radius: 20px;
-  padding: 8px 16px;
-  transition: all 0.2s ease;
-}
-
-.search-bar:focus-within {
-  box-shadow: 0 0 0 2px rgba(117, 154, 59, 0.25); /* Green to match dashboard */
-}
-
-.search-bar i {
-  color: var(--farm-text-secondary);
-  margin-right: 8px;
-}
-
-.search-bar input {
-  border: none;
-  background: transparent;
-  outline: none;
-  color: var(--farm-text-primary);
-  width: 180px;
-  font-size: 0.9rem;
-}
-
-.search-bar input::placeholder {
-  color: var(--farm-text-secondary);
-}
 
 /* Main Content */
 .main-content {
@@ -387,7 +193,7 @@
   width: 100%;
 }
 
-/* Section Titles */
+/* Section and Subsection Titles */
 .section-title {
   font-size: 1.8rem;
   font-weight: 700;
@@ -397,18 +203,6 @@
   position: relative;
   display: inline-block;
 }
-
-.section-title::after {
-  content: '';
-  position: absolute;
-  bottom: -8px;
-  left: 0;
-  width: 60px;
-  height: 3px;
-  background-color: var(--farm-accent-color);
-  border-radius: 3px;
-}
-
 .subsection-title {
   font-size: 1.5rem;
   font-weight: 700;
@@ -417,13 +211,12 @@
   display: flex;
   align-items: center;
 }
-
 .subsection-title i {
   margin-right: 10px;
   color: var(--farm-accent-color);
 }
 
-/* Welcome Section - Fixed for light mode */
+/* Welcome Section Wrapper Card */
 .welcome-section {
   padding: 32px;
   background-color: var(--farm-card-bg);
@@ -434,19 +227,8 @@
   transition: all 0.3s ease;
 }
 
-/* Darker welcome section - Fixed for light mode */
-.welcome-section.darker {
-  background-color: var(--farm-card-bg);
-  border-left: 5px solid var(--farm-accent-color);
-}
-
-body.dark-mode .welcome-section.darker {
-  background: linear-gradient(to bottom right, #222933, #1e242c);
-  border-left: 5px solid var(--farm-accent-color);
-}
-
-/* Farm Name Section - Positioned above fields */
-.farm-name-section {
+/* Farm Name Header */
+.farm-details-section {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -454,32 +236,17 @@ body.dark-mode .welcome-section.darker {
   padding: 16px 0;
   border-bottom: 2px solid var(--farm-border-color);
 }
-
-.farm-name-container {
+.farm-details-container {
   display: flex;
   flex-direction: column;
 }
-
-.farm-name-title {
+.farm-details {
   font-size: 1.8rem;
   font-weight: 700;
-  color: var(--farm-accent-color);
+  color: var(--farm-text-primary);
   margin: 0;
   display: flex;
   align-items: center;
-}
-
-.farm-name-title i {
-  margin-right: 12px;
-  font-size: 2rem;
-  color: var(--farm-accent-color);
-}
-
-.farm-name-subtitle {
-  font-size: 1rem;
-  color: var(--farm-text-secondary);
-  margin: 4px 0 0 0;
-  font-weight: 400;
 }
 
 .farm-status-indicator {
@@ -490,12 +257,10 @@ body.dark-mode .welcome-section.darker {
   background-color: rgba(117, 154, 59, 0.1);
   border: 1px solid rgba(117, 154, 59, 0.3);
 }
-
 .farm-status-indicator i {
   margin-right: 8px;
   color: var(--farm-accent-color);
 }
-
 .farm-status-text {
   font-weight: 500;
   color: var(--farm-accent-color);
@@ -505,25 +270,22 @@ body.dark-mode .welcome-section.darker {
 .fields-section {
   margin-bottom: 30px;
 }
-
-/* Dashboard link */
 .dashboard-link {
-  color: var(--farm-accent-color);
+  color: var(--farm-text-primary);
   font-size: 1.1rem;
   text-decoration: none;
   font-weight: 500;
   transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
-}
 
+}
 .dashboard-link:hover {
-  color: #5f7e2f; /* Darker green to match dashboard */
-  transform: translateX(-3px);
+  color: var(--farm-text-primary);
+  transform: translateX(-10px);
+ 
 }
-
-/* Add Field Button */
-.add-field-btn {
+.add-field-btn, .add-soil-data-btn {
   background-color: var(--farm-accent-color);
   color: white;
   border: none;
@@ -532,31 +294,13 @@ body.dark-mode .welcome-section.darker {
   font-weight: 500;
   transition: all 0.2s ease;
 }
-
-.add-field-btn:hover {
-  background-color: #5f7e2f; /* Darker green to match dashboard */
+.add-field-btn:hover, .add-soil-data-btn:hover {
+  background-color: #5f7e2f;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Add Soil Data Button */
-.add-soil-data-btn {
-  background-color: var(--farm-accent-color);
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-
-.add-soil-data-btn:hover {
-  background-color: #5f7e2f; /* Darker green to match dashboard */
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Fields scroll container with hidden scrollbar */
+/* Fields Scroll Container */
 .fields-scroll-container {
   overflow-x: auto;
   padding-bottom: 10px;
@@ -565,11 +309,9 @@ body.dark-mode .welcome-section.darker {
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
 }
-
 .fields-scroll-container::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
 }
-
 .fields-scroll-wrapper {
   display: flex;
   gap: 20px;
@@ -577,7 +319,7 @@ body.dark-mode .welcome-section.darker {
   min-width: max-content;
 }
 
-/* Field Item Styling - REDESIGNED without images and unified style */
+/* Field Item Card */
 .field-item {
   border-radius: 16px;
   min-width: 220px;
@@ -592,24 +334,18 @@ body.dark-mode .welcome-section.darker {
   flex-direction: column;
   overflow: hidden;
 }
-
-/* Unified field style using blue instead of green */
 .field-item.unified-field {
   background-color: var(--farm-unified-field-bg);
 }
-
 .field-item:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   filter: brightness(1.1);
 }
-
 .field-item.active {
   border-color: var(--farm-accent-color);
-  box-shadow: 0 0 0 3px rgba(117, 154, 59, 0.4); /* Green to match dashboard */
+  box-shadow: 0 0 0 3px rgba(117, 154, 59, 0.4);
 }
-
-/* Field details section */
 .field-item-details {
   height: 100%;
   padding: 20px;
@@ -617,38 +353,26 @@ body.dark-mode .welcome-section.darker {
   flex-direction: column;
   justify-content: center;
   text-align: center;
-  overflow-y: auto;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
+  background-color: var(--field-card-bg);
 }
-
-.field-item-details::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
-}
-
 .field-item-name {
   font-weight: 600;
   margin-bottom: 12px;
   font-size: 1.3rem;
 }
-
 .field-item-info {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
-
 .field-item-crop {
   color: rgba(255, 255, 255, 0.85);
   font-size: 1.1rem;
 }
-
 .field-item-size {
   color: rgba(255, 255, 255, 0.75);
   font-size: 1rem;
 }
-
-/* Delete Field Button - Repositioned to top right */
 .delete-field-btn {
   position: absolute;
   top: 10px;
@@ -668,17 +392,15 @@ body.dark-mode .welcome-section.darker {
   transition: opacity 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
   z-index: 10;
 }
-
 .field-item:hover .delete-field-btn {
   opacity: 1;
 }
-
 .delete-field-btn:hover {
   transform: scale(1.1);
   background-color: var(--farm-delete-hover-color);
 }
 
-/* Chart Container */
+/* Chart and Weather Containers */
 .chart-container {
   background-color: var(--farm-card-bg);
   border-radius: 16px;
@@ -688,21 +410,18 @@ body.dark-mode .welcome-section.darker {
   border: 1px solid var(--farm-border-color);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
 .chart-container:hover {
   transform: translateY(-3px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
-
 .chart-header {
   padding: 18px 24px;
   border-bottom: 1px solid var(--farm-border-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgba(117, 154, 59, 0.05); /* Green to match dashboard */
+  background-color: rgba(117, 154, 59, 0.05);
 }
-
 .chart-header h5 {
   margin: 0;
   font-weight: 700;
@@ -711,23 +430,20 @@ body.dark-mode .welcome-section.darker {
   display: flex;
   align-items: center;
 }
-
 .chart-header h5 i {
   margin-right: 10px;
   font-size: 1.3rem;
 }
-
 .chart-body {
   padding: 24px;
 }
 
-/* Weather Details - Enhanced styling */
+/* Weather Details */
 .weather-details {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
 }
-
 .detail-item {
   display: flex;
   align-items: center;
@@ -740,13 +456,11 @@ body.dark-mode .welcome-section.darker {
   border: 1px solid rgba(117, 154, 59, 0.2);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
-
 .detail-item:hover {
   background: linear-gradient(135deg, rgba(117, 154, 59, 0.15), rgba(117, 154, 59, 0.08));
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
-
 .detail-item i {
   width: 40px;
   height: 40px;
@@ -765,7 +479,6 @@ body.dark-mode .welcome-section.darker {
 .health-metric {
   margin-bottom: 24px;
 }
-
 .health-label {
   font-size: 1.1rem;
   margin-bottom: 12px;
@@ -774,38 +487,33 @@ body.dark-mode .welcome-section.darker {
   align-items: center;
   font-weight: 500;
 }
-
 .info-tooltip-trigger {
   cursor: help;
   color: var(--farm-text-secondary);
 }
-
 .progress {
   height: 12px;
   background-color: rgba(0, 0, 0, 0.1);
   border-radius: 6px;
   overflow: hidden;
 }
-
 .progress-bar {
   border-radius: 6px;
-  background: linear-gradient(to right, #759a3b, #8BC34A); /* Green to match dashboard */
+  background: linear-gradient(to right, #759a3b, #8BC34A);
 }
-
 .health-value {
   font-size: 1.5rem;
   text-align: right;
   margin-top: 12px;
   font-weight: 700;
-  color: var(--farm-accent-color);
+  color: var(--farm-text-primary);
 }
 
 /* Recommendations Section */
 .recommendations-section {
   margin-bottom: 30px;
 }
-
-.generate-recommendations-btn {
+.generate-recommendations-btn, .view-all-btn {
   background-color: var(--farm-accent-color);
   color: white;
   border: none;
@@ -815,35 +523,16 @@ body.dark-mode .welcome-section.darker {
   transition: all 0.2s ease;
   font-size: 1.05rem;
 }
-
-.generate-recommendations-btn:hover {
-  background-color: #5f7e2f; /* Darker green to match dashboard */
+.generate-recommendations-btn:hover, .view-all-btn:hover {
+  background-color: #5f7e2f;
   transform: translateY(-3px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
-/* View All Link */
-.view-all-link {
-  color: var(--farm-accent-color);
-  text-decoration: none;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  font-size: 1.05rem;
-}
-
-.view-all-link:hover {
-  color: #5f7e2f; /* Darker green to match dashboard */
-  transform: translateX(3px);
-}
-
-/* Recommendation Card */
 .recommendation-card {
   background-color: var(--farm-card-bg);
   border-radius: 16px;
   box-shadow: var(--farm-card-shadow);
-  height: 200px;
+  min-height: 200px;
   margin-bottom: 20px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
@@ -852,7 +541,6 @@ body.dark-mode .welcome-section.darker {
   flex-direction: column;
   padding: 0;
 }
-
 .recommendation-card::before {
   content: '';
   position: absolute;
@@ -860,14 +548,12 @@ body.dark-mode .welcome-section.darker {
   left: 0;
   height: 6px;
   width: 100%;
-  background: linear-gradient(to right, var(--farm-accent-color), #5d8fc9); /* Changed from green to blue */
+  background: linear-gradient(to right, var(--farm-accent-color), #8BC34A);
 }
-
 .recommendation-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
 }
-
 .recommendation-card.applied::after {
   content: '✓';
   position: absolute;
@@ -884,7 +570,6 @@ body.dark-mode .welcome-section.darker {
   font-size: 0.9rem;
   font-weight: bold;
 }
-
 .recommendation-title {
   font-weight: 700;
   font-size: 1.2rem;
@@ -892,22 +577,13 @@ body.dark-mode .welcome-section.darker {
   padding: 20px 20px 10px 20px;
   border-bottom: 1px solid var(--farm-border-color);
 }
-
 .recommendation-description {
   color: var(--farm-text-primary);
   font-size: 1rem;
   line-height: 1.6;
   padding: 15px 20px;
   flex-grow: 1;
-  overflow-y: auto;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
 }
-
-.recommendation-description::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
-}
-
 .apply-btn {
   margin: 0 20px 20px 20px;
   background-color: var(--farm-accent-color);
@@ -917,31 +593,46 @@ body.dark-mode .welcome-section.darker {
   border-radius: 8px;
   font-size: 0.95rem;
   transition: all 0.2s ease;
+  align-self: flex-start; /* Aligns button to the left */
 }
-
 .apply-btn:hover {
-  background-color: #3a5a8c; /* Darker blue */
+  background-color: #5f7e2f; /* Darker green */
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
 .apply-btn:disabled {
   background-color: #adb5bd;
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
 }
+.empty-recommendations {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--farm-text-secondary);
+    background-color: var(--farm-card-bg-hover);
+    border-radius: 16px;
+    border: 2px dashed var(--farm-border-color);
+}
+.empty-recommendations i {
+    font-size: 2.5rem;
+    margin-bottom: 16px;
+    color: var(--farm-accent-color);
+}
+.empty-recommendations p {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: 0;
+}
 
 /* All Recommendations Modal */
 .all-recommendations-modal .modal-dialog {
   max-width: 800px;
 }
-
 .all-recommendations-modal .modal-body {
   max-height: 70vh;
   overflow-y: auto;
 }
-
 .all-recommendations-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -952,8 +643,6 @@ body.dark-mode .welcome-section.darker {
 .soil-data-section {
   margin-bottom: 30px;
 }
-
-/* Soil Data Card */
 .soil-data-card {
   background-color: var(--farm-card-bg);
   border-radius: 16px;
@@ -966,7 +655,6 @@ body.dark-mode .welcome-section.darker {
   position: relative;
   overflow: hidden;
 }
-
 .soil-data-card::after {
   content: '';
   position: absolute;
@@ -977,16 +665,13 @@ body.dark-mode .welcome-section.darker {
   background-color: var(--farm-accent-color);
   opacity: 0.7;
 }
-
 .soil-data-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
-
 .soil-data-card:hover::after {
   opacity: 1;
 }
-
 .soil-data-title {
   color: var(--farm-text-secondary);
   font-size: 1.05rem;
@@ -996,14 +681,13 @@ body.dark-mode .welcome-section.darker {
   justify-content: center;
   font-weight: 500;
 }
-
 .soil-data-value {
   font-size: 1.8rem;
   font-weight: 700;
   color: var(--farm-accent-color);
 }
 
-/* Modal Styling */
+/* General Modal Styling */
 .modal-content {
   border-radius: 16px;
   border: none;
@@ -1011,45 +695,39 @@ body.dark-mode .welcome-section.darker {
   background-color: var(--farm-card-bg);
   color: var(--farm-text-primary);
 }
-
 .modal-header {
   border-bottom: 1px solid var(--farm-border-color);
   padding: 16px 24px;
   align-items: center;
 }
-
 .modal-header .btn-close {
   margin: 0;
   padding: 0;
   font-size: 1.2rem;
   opacity: 0.7;
 }
-
 .modal-body {
   padding: 24px;
 }
-
 .modal-footer {
   border-top: 1px solid var(--farm-border-color);
   padding: 16px 24px;
   justify-content: flex-end;
   gap: 10px;
 }
-
 .modal-title {
   font-weight: 600;
   font-size: 1.25rem;
   margin: 0;
 }
 
-/* Form controls */
+/* Form controls in Modals */
 .form-label {
   font-weight: 500;
   margin-bottom: 8px;
   display: block;
   color: var(--farm-text-primary);
 }
-
 .form-control,
 .form-select {
   border-radius: 8px;
@@ -1058,15 +736,13 @@ body.dark-mode .welcome-section.darker {
   transition: all 0.2s ease;
   width: 100%;
   font-size: 1rem;
-  margin-bottom: 20px;
   background-color: var(--farm-card-bg);
   color: var(--farm-text-primary);
 }
-
 .form-control:focus,
 .form-select:focus {
   border-color: var(--farm-accent-color);
-  box-shadow: 0 0 0 3px rgba(74, 109, 167, 0.25); /* Changed from green to blue */
+  box-shadow: 0 0 0 3px rgba(117, 154, 59, 0.25);
   background-color: var(--farm-card-bg);
 }
 
@@ -1077,157 +753,94 @@ body.dark-mode .welcome-section.darker {
   font-weight: 500;
   transition: all 0.2s ease;
 }
-
-.modal-footer .btn-secondary {
-  background-color: #6c757d;
-  color: white;
-  border: none;
-}
-
-.modal-footer .btn-secondary:hover {
-  background-color: #5a6268;
-}
-
 .modal-footer .btn-primary {
   background-color: var(--farm-accent-color);
   color: white;
   border: none;
 }
-
 .modal-footer .btn-primary:hover {
-  background-color: #3a5a8c; /* Darker blue */
+  background-color: #5f7e2f; /* Darker green */
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Overrides for Bootstrap classes */
+.btn-success {
+  background-color: var(--farm-accent-color) !important;
+  border-color: var(--farm-accent-color) !important;
+}
+.btn-success:hover {
+  background-color: #5f7e2f !important; /* Darker green */
+  border-color: #5f7e2f !important;
+}
+.bg-success {
+  background-color: var(--farm-accent-color) !important;
+}
+
 /* Responsive Adjustments */
 @media (max-width: 992px) {
-  .search-bar {
-    width: 160px;
-  }
-  
-  .search-bar input {
-    width: 120px;
-  }
-  
   .weather-details {
     grid-template-columns: repeat(2, 1fr);
   }
-  
   .container-fluid {
     padding: 0 20px;
   }
 }
-
 @media (max-width: 768px) {
   .top-nav {
     padding: 0 16px;
   }
-  
   .logo-text {
     font-size: 1.2rem;
   }
-  
-  .search-bar {
-    display: none;
-  }
-  
   .section-title {
     font-size: 1.5rem;
   }
-  
   .welcome-section {
     padding: 20px;
   }
-  
   .chart-header {
     padding: 14px 18px;
   }
-  
   .chart-body {
     padding: 18px;
   }
-  
   .field-item {
     min-width: 200px;
     height: 150px;
   }
-  
   .recommendation-card {
-    height: 180px;
+    min-height: 180px;
   }
-  
   .container-fluid {
     padding: 0 15px;
   }
 }
-
 @media (max-width: 576px) {
   .notification-bell,
   .theme-toggle {
     margin-right: 8px;
   }
-  
   .logo-icon {
     font-size: 1.5rem;
   }
-  
   .logo-text {
-    font-size: 1rem;
+    display: none; /* Hide logo text on very small screens */
   }
-  
   .section-title {
     font-size: 1.3rem;
   }
-  
   .weather-details {
     grid-template-columns: 1fr;
   }
-  
   .field-item {
     min-width: 180px;
     height: 140px;
   }
-  
   .recommendation-card {
-    height: 180px;
+    min-height: 180px;
   }
-  
   .container-fluid {
     padding: 0 10px;
   }
-}
-
-/* Field and Weather Section Layout */
-.field-weather-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  margin-bottom: 30px;
-}
-
-.field-section-container {
-  flex: 1;
-  min-width: 300px;
-}
-
-.weather-section-container {
-  flex: 1;
-  min-width: 300px;
-}
-
-/* Fix for btn-success class */
-.btn-success {
-  background-color: var(--farm-accent-color) !important;
-  border-color: var(--farm-accent-color) !important;
-}
-
-.btn-success:hover {
-  background-color: #3a5a8c !important; /* Darker blue */
-  border-color: #3a5a8c !important;
-}
-
-/* Fix for bg-success class */
-.bg-success {
-  background-color: var(--farm-accent-color) !important;
 }

@@ -11,7 +11,7 @@ export const routes: Routes = [
   { path: 'login-page', component: LoginPageComponent },
   { path: 'signup-page', component: SignupPageComponent },
   { path: 'dashboard-page', component: DashboardPageComponent },
-  { path: 'farm-page/:id/:location', component: FarmPageComponent},
+  { path: 'farm-page/:id/:location/:size/:name', component: FarmPageComponent},
   { path: '**', redirectTo: 'home-page' } 
 
 ];  

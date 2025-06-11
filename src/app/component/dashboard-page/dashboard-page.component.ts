@@ -36,9 +36,9 @@ getStatusClass(status: number): string{
 
 
 
- View(id: number , farmLocation: string) {
+ View(id: number , farmLocation: string,farmSize: number,farmName: string) {
  
-    this.router.navigate(['/farm-page', id,farmLocation]);
+    this.router.navigate(['/farm-page', id,farmLocation,farmSize,farmName]);
   
 
 } 

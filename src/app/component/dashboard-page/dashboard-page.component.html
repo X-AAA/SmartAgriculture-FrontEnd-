@@ -223,7 +223,7 @@
                       <div class="health-value">{{farm.getOverAllStatus()}}%</div>
                     </div>
                     <div class="farm-actions mt-2">
-                      <button (click)="View(farm.getId(),farm.getFarmLocation())" class="btn btn-sm btn-outline-secondary view-farm-btn"><i class="fas fa-eye"></i> View</button>
+                      <button (click)="View(farm.getId(),farm.getFarmLocation(),farm.getFarmSize(),farm.getFarmName())" class="btn btn-sm btn-outline-secondary view-farm-btn"><i class="fas fa-eye"></i> View</button>
                       <button (click)="openEditModal(farm.getId())" class="btn btn-sm btn-outline-secondary edit-farm-btn" data-bs-toggle="modal" data-bs-target="#editFarmModal"><i class="fas fa-edit"></i> Edit</button>
                     </div>
                   </div>

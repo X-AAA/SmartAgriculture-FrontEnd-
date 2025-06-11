@@ -40,6 +40,8 @@ export class FarmPageComponent implements OnInit, AfterViewInit {
   errorMessage: string | null = null;
   successMessage: string | null = null;
   farmLocation: string | null = null;
+  farmSize: number | null = null;
+  farmName: string | null = null;
 
   farmId: number | null = null ;
   fieldToDeleteId: number | null = null;
@@ -408,6 +410,8 @@ loadFieldData(): void {
       const headers = new HttpHeaders().set('Accept', '*/*').set('Authorization', `Bearer ${token}`);
    this. farmId = this.route.snapshot.params['id'];
    this. farmLocation = this.route.snapshot.params['location'];
+   this. farmSize = this.route.snapshot.params['size'];
+   this. farmName = this.route.snapshot.params['name'];
 
   this.farmService.getFarmWeatherById(this.farmId!,this.farmLocation!, headers).subscribe({
     next: (response:any) => {
