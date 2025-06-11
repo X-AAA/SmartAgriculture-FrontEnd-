@@ -1,9 +1,9 @@
 import { CommonModule, NgIf } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, Validators, ReactiveFormsModule } from '@angular/forms';
-import { RegisterService } from '../../services/register.service';
 import { User } from './user.model';
 import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 
 @Component({
@@ -13,7 +13,7 @@ import { Router, RouterModule } from '@angular/router';
   styleUrl: './signup-page.component.css'
 })
 
-export class SignupPageComponent {
+export class SignupPageComponent implements OnInit {
 registerForm: FormGroup;
   
 
@@ -22,7 +22,7 @@ registerForm: FormGroup;
   errorMessage: string | null = null;
   successMessage: string | null = null;
 
-  constructor( private readonly router:Router ,private readonly registerService: RegisterService, private readonly fb: FormBuilder) {
+  constructor( private readonly router:Router ,private readonly registerService: AuthService, private readonly fb: FormBuilder) {
     this.registerForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -31,7 +31,10 @@ registerForm: FormGroup;
       birthDate: ['', Validators.required]
     });
   }
-
+  ngOnInit(): void {
+    console.log( this.users);
+  }
+   users: User[] = [];
   onSubmit() {
     // Reset messages and set loading state
     this.errorMessage = null;
@@ -43,20 +46,20 @@ registerForm: FormGroup;
       // Create the user object locally for submission.
       // Ensure your User class has a constructor matching these arguments.
 
-  const userRegister: User = {
-  dateOfBirth: formValues.birthDate,
-  firstName: formValues.firstName,
-  lastName: formValues.lastName,
-  email: formValues.email,
-  password: formValues.password
-};
-      
-
+  
+  const userRegister: User = new User(
+  formValues.birthDate,
+  formValues.firstName,
+ formValues.lastName,
+ formValues.email,
+ formValues.password
+  );    
+  this.users.push(userRegister);
       // Call the service AND subscribe to trigger the request and handle the response.
       this.registerService.registerUser(userRegister).subscribe({
-        next: (response) => {
+        next: (response: any) => {
           // Handle successful registration
-          console.log('Registration successful:', response);
+         
           this.successMessage = 'Registration successful!';
           this.isLoading = false;
           // Optionally reset the form
@@ -65,7 +68,7 @@ registerForm: FormGroup;
           this.router.navigate(['/login-page']); // Adjust route as needed
         }, 1000);
         },
-        error: (error) => {
+        error:(error) => {
           // Handle registration error
           
           console.error('Registration failed:', error);

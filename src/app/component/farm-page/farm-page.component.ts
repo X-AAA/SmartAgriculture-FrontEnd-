@@ -1,62 +1,481 @@
-import { Component, OnInit } from '@angular/core';
+declare var bootstrap: any;
+import { AfterViewInit, Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FarmService, FarmUser } from '../../services/farm.service';
-import { ActivatedRoute } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Farm, Field, SoilData } from './farm.model';
+import { AuthService } from '../../services/auth.service';
+import { FieldService } from '../../services/field.service';
+import { HttpHeaders } from '@angular/common/http';
+import { WeatherReadings } from './farm.model';
+import { FarmService } from '../../services/farm.service';
+import { SoilDataService } from '../../services/soilData.service';
 
 @Component({
   selector: 'app-farm-page',
   standalone: true,
-  imports: [CommonModule],
+  imports: [RouterModule, ReactiveFormsModule, FormsModule, CommonModule],
   templateUrl: './farm-page.component.html',
   styleUrl: './farm-page.component.css'
 })
-export class FarmPageComponent implements OnInit {
-  farmUser: FarmUser | null = null;
-  error: string | null = null;
-  loading = true;
 
-  constructor(
-    private readonly farmService: FarmService,
-    private readonly route: ActivatedRoute
-  ) {}
+export class FarmPageComponent implements OnInit, AfterViewInit {
+  display: boolean = false;
+
+
+
+onAddSoilDataSubmit() {
+  const token = this.authService.getToken();
+  if (token) {
+    const headers = new HttpHeaders().set('Accept', '*/*').set('Authorization', `Bearer ${token}`);
+
+    
+  if (this.addSoilDataForm.valid) {
+    // Add logic to actually add the farm (e.g., API call)  
+      
+    const newSoilData :SoilData = new SoilData(
+     this.addSoilDataForm.value.soilPH,
+     this.addSoilDataForm.value.nitrogen,
+     this.addSoilDataForm.value.phosphorus,
+     this.addSoilDataForm.value.potassium,
+     this.addSoilDataForm.value.soilTexture,
+     this.addSoilDataForm.value.soilMoisture,
+     this.addSoilDataForm.value.soilOrganicMatter
+     );
+     this.soilDataService.addSoildData(this.farmId!,this.selectedField!.getId(),newSoilData,headers).subscribe({
+      next: () => {  
+
+        this.getSoilDataItems();
+
+this.successMessage = 'Soil data added successfully.';
+console.log(this.successMessage);
+
+      },
+      error: (error) => {
+        console.error('Error adding soil data:', error);
+        this.errorMessage = error?.error?.message ?? 'Soil data adding failed. Please try again.';
+    
+      }
+    });
+
+
 
   
-  ngOnInit() {
-    this.route.params.pipe(
-      switchMap(params => {
-        const accessToken = params['token'];
-        const tokenType = params['tokenType'];
-        return this.farmService.getUserFarmInfo(accessToken);
-      })
-    ).subscribe({
-      next: (user) => {
-        this.farmUser = user;
-        this.loading = false;
+    this.addSoilDataForm.reset();
+
+}
+  }
+}
+
+
+soilDataItems:any[]=[];
+
+getSoilDataItems() {
+  const token = this.authService.getToken();
+  if (token) {
+    const headers = new HttpHeaders()
+      .set('Accept', '*/*')
+      .set('Authorization', `Bearer ${token}`);
+
+    // Use the new getFarmById service method
+    this.soilDataService.getSoilData(this.farmId!,this.selectedField!.getId(), headers).subscribe({
+      next: (soilData: any ) => {
+    this.display = false;
+          const soilDataInstance = new SoilData(
+            soilData.soilPH,
+            soilData.nitrogen,
+            soilData.phosphorus,
+            soilData.potassium,
+            soilData.soilTexture,
+            soilData.soilMoisture,
+            soilData.soilOrganicMatter // Use the property name from the API response
+          );
+       
+          (soilDataInstance as any ).id = soilData.id;
+          
+          this.soilDataItems = [{
+            title:"soilPH",
+            tooltip:"soilPH",
+            value:soilDataInstance.soilPH,
+           },
+            {
+              title:"nitrogen",
+              tooltip:"nitrogen",
+              value:soilDataInstance.nitrogen,
+            },  
+          {
+            title:"phosphorus",
+            tooltip:"phosphorus",
+            value:soilDataInstance.phosphorus,
+          },
+          {
+            title:"potassium",
+            tooltip:"potassium",
+            value:soilDataInstance.potassium,
+          },
+          {
+            title:"soilTexture",
+            tooltip:"soilTexture",
+            value:soilDataInstance.soilTexture,
+          },
+          {
+            title:"soilMoisture",
+            tooltip:"soilMoisture",
+            value:soilDataInstance.soilMoisture,
+          },
+          {
+            title:"soilOrganicMatter",
+            tooltip:"soilOrganicMatter",
+            value:soilDataInstance.soilOrganicMatter,
+            }]; 
+
+        console.log(this.soilDataItems);
+
+       
       },
-      error: (err) => {
-        this.error = 'Failed to load farm user data';
-        this.loading = false;
-        console.error('Error loading farm user:', err);
+      error: (error) => {
+        this.display = true;
+        console.error('Error fetching soil data:', error);
+        this.errorMessage = error?.error?.message ?? 'Failed to load soil data. Please try again.';
+      }
+    });
+  } else {
+    this.selected = false;
+    console.log('No token found. Please log in.');
+    this.errorMessage = 'Authentication token not found. Please log in.';
+  }
+
+
+}
+  
+
+selected: boolean = false;
+
+selectedField: Field | null = null;
+selectField(fieldId: number) {
+  const token = this.authService.getToken();
+  if (token) {
+    const headers = new HttpHeaders()
+      .set('Accept', '*/*')
+      .set('Authorization', `Bearer ${token}`);
+
+    // Use the new getFarmById service method
+    this.fieldService.getFieldById(this.farmId!,fieldId, headers).subscribe({
+      next: (field: any ) => {
+          const fieldInstance = new Field(
+            field.fieldName,
+            field.fieldSize,
+            field.cropType // Use the property name from the API response
+          );
+       
+          (fieldInstance as any ).id = field.id;
+          (fieldInstance as any ).soilData = field.soilData;
+          (fieldInstance as any ).recommendation = field.recommendation;
+          (fieldInstance as any ).fieldCondition = field.fieldCondition;
+            
+          this.selectedField = fieldInstance; // Assuming response is any[] for simplicity
+          this.getSoilDataItems();
+        
+        
+
+      },
+      error: (error) => {
+        console.error('Error fetching field details:', error);
+        this.errorMessage = error?.error?.message ?? 'Failed to load field details. Please try again.';
+      }
+    });
+    
+  } else {
+    this.selected = false;
+    console.log('No token found. Please log in.');
+    this.errorMessage = 'Authentication token not found. Please log in.';
+  }
+}
+
+getSelectedField(): Field | null {
+  return this.selectedField;
+}
+
+onAddFieldSubmit() {
+
+  const token = this.authService.getToken();
+  if (token) {
+    const headers = new HttpHeaders().set('Accept', '*/*').set('Authorization', `Bearer ${token}`);
+
+    
+  if (this.addFieldForm.valid) {
+    // Add logic to actually add the farm (e.g., API call)  
+      
+    const newField :Field = new Field(
+      this.addFieldForm.value.fieldName,
+      this.addFieldForm.value.fieldSize,
+      this.addFieldForm.value.cropType,
+     );
+   this.farmId = this.route.snapshot.params['id'];
+     this.fieldService.addField(this.farmId!,newField,headers).subscribe({
+      next: () => {  
+
+
+
+      },
+      error: (error) => {
+        console.error('Error adding field:', error);
+        this.errorMessage = error?.error?.message ?? 'Field adding failed. Please try again.';
+    
       }
     });
 
-    this.route.params.pipe(
-      switchMap(params => {
-        const accessToken = params['token'];
-      
-        return this.farmService.getUserFarmInfo(accessToken);
-      })
-    ).subscribe({
-      next: (user) => {
-        this.farmUser = user;
-        this.loading = false;
-      },
-      error: (err) => {
-        this.error = 'Failed to load farm user data';
-        this.loading = false;
-        console.error('Error loading farm user:', err);
-      }
+
+
+  
+    this.fields.push(newField);
+    this.addFieldForm.reset();
+  } 
+
+ 
+
+  }else {
+    console.log('No token found. Please log in.');
+  }
+
+
+}
+
+openDeleteModal(fieldId: number): void {
+
+
+  this.errorMessage = null; 
+  
+    const token = this.authService.getToken();
+    if (token) {
+        this.fieldToDeleteId = fieldId;
+    } else {
+      this.errorMessage = 'Authentication token not found. Please log in.';
+      console.log('No token found. Cannot fetch farm name or delete.');
+    }
+
+}
+
+deleteField(): void {
+    if (this.fieldToDeleteId === null) {
+      this.errorMessage = 'No field selected for deletion.';
+      return;
+    }
+
+    const token = this.authService.getToken();
+    if (token) {
+      const headers = new HttpHeaders()
+        .set('Accept', '*/*') 
+        .set('Authorization', `Bearer ${token}`);
+
+      this.isLoading = true; 
+      this.errorMessage = null;
+
+      // Call the DeleteFarm service method
+      this.fieldService.DeleteField(this.fieldToDeleteId,this.farmId!, headers).subscribe({
+        next: () => {
+          console.log(`Farm with ID ${this.fieldToDeleteId} deleted successfully.`);
+          this.isLoading = false;
+          this.fieldToDeleteId = null; // Reset ID
+          this.fieldToDeleteId = null; // Reset name
+          // Add code here to close the modal
+          const modalElement = document.getElementById('deleteFarmModal');
+          if (modalElement) {
+              const deleteModal = bootstrap.Modal.getInstance(modalElement);
+              if (deleteModal) {
+                  deleteModal.show();
+              
+              } else {
+                  console.warn('Could not get Bootstrap modal instance to hide it.');
+              }
+          } else {
+              console.warn('Could not find modal element with ID deleteFarmModal to hide it.');
+          }
+          // Add code to refresh the list of farms
+           this.loadFieldData();
+        },
+        error: (error) => {
+          console.error('Error deleting farm:', error);
+          this.isLoading = false;
+          this.errorMessage = error?.error?.message ?? 'Farm deletion failed. Please try again.';
+          // Keep the modal open or handle error display appropriately
+        }
+      });
+    } else {
+      console.log('No token found. Please log in.');
+      this.errorMessage = 'Authentication token not found. Please log in.';
+    }
+}
+  
+applyRecommendation(arg0: any) {
+throw new Error('Method not implemented.');
+}
+
+getMostImportantRecommendation(): any {
+  return {
+    id: 1,
+    title: 'Sample Recommendation 1',
+    description: 'This is a sample recommendation',
+    applied: false
+  };
+}
+
+logout() {
+throw new Error('Method not implemented.');
+}
+  
+
+recommendations: any[] = [];
+
+
+  addFieldForm!: FormGroup;
+  addSoilDataForm!: FormGroup;
+  isDarkMode: boolean = false;
+  errorMessage: string | null = null;
+  successMessage: string | null = null;
+  isLoading: boolean = false;
+  fieldToDeleteId: number | null = null;
+
+
+
+  constructor(
+    private authService: AuthService,
+    private fieldService: FieldService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private fb: FormBuilder,
+    private elementRef: ElementRef,
+    private renderer: Renderer2,
+    private farmService: FarmService,
+    private soilDataService: SoilDataService
+  ) {}
+ /*  ngOnDestroy(): void {
+   this.routeSub?.unsubscribe();
+  }
+ */
+  ngOnInit(): void {
+    this.initializeForms();
+    this.loadThemePreference();
+  this.loadFieldData();
+  }
+
+  ngAfterViewInit(): void {
+    // Initialize Bootstrap dropdowns
+    const dropdownElementList = [].slice.call(this.elementRef.nativeElement.querySelectorAll('.dropdown-toggle'));
+    dropdownElementList.map(function (dropdownToggleEl) {
+      return new bootstrap.Dropdown(dropdownToggleEl);
+    });
+
+    // Initialize tooltips
+    const tooltipTriggerList = [].slice.call(this.elementRef.nativeElement.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl);
     });
   }
+
+  initializeForms(): void {
+    this.addFieldForm = this.fb.group({
+      fieldName: ['', Validators.required],
+      fieldSize: [null, [Validators.required, Validators.min(1)]],
+      cropType: ['Corn', Validators.required]
+    });
+
+    this.addSoilDataForm = this.fb.group({
+      soilPH: [null, [Validators.required, Validators.min(0), Validators.max(14)]],
+      nitrogen: [null, [Validators.required, Validators.min(0)]],
+      phosphorus: [null, [Validators.required, Validators.min(0)]],
+      potassium: [null, [Validators.required, Validators.min(0)]],
+      soilTexture: ['Loam', Validators.required],
+      soilMoisture: [null, [Validators.required, Validators.min(0), Validators.max(100)]],
+      soilOrganicMatter: [null, [Validators.required, Validators.min(0), Validators.max(100)]]
+    });
+  }
+
+  loadThemePreference(): void {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      this.isDarkMode = true;
+      this.renderer.setAttribute(document.body, 'data-bs-theme', 'dark');
+    } else {
+      this.isDarkMode = false;
+      this.renderer.removeAttribute(document.body, 'data-bs-theme');
+    }
+  }
+
+fields : Field[] = [];
+farmId: number | null = null ;
+farmLocation: string | null = null;
+weatherReadings!: WeatherReadings;
+
+
+loadFieldData(): void {
+ 
+  const token = this.authService.getToken();  // Retrieve the token from the service
+    this.isLoading = false;
+    if (token) {
+      const headers = new HttpHeaders().set('Accept', '*/*').set('Authorization', `Bearer ${token}`);
+   this. farmId = this.route.snapshot.params['id'];
+   this. farmLocation = this.route.snapshot.params['location'];
+
+  this.farmService.getFarmWeatherById(this.farmId!,this.farmLocation!, headers).subscribe({
+    next: (response:any) => {
+      this.weatherReadings = response;
+      console.log(this.weatherReadings);
+    },
+    error: (error) => {
+      console.error('Error fetching weather readings:', error);
+    }
+  });
+
+  
+
+
+      this.fieldService.FieldInfo(this.farmId!,headers).subscribe({
+          next: (response) => {
+            this.fields = response.map((fieldData: any) => { // Assuming response is any[] for simplicity
+              const fieldInstance = new Field(
+                fieldData.fieldName,
+                fieldData.fieldSize,
+                fieldData.cropType // Use the property name from the API response
+              );
+            
+              (fieldInstance as any).id = fieldData.id;
+              (fieldInstance as any).soilData = fieldData.soilData;
+              (fieldInstance as any).recommendation = fieldData.recommendation;
+              (fieldInstance as any).fieldCondition = fieldData.fieldCondition;
+              (fieldInstance as any).active = fieldData.active;
+
+
+              return fieldInstance;
+            });
+             console.log(this.fields);
+
+        }, 
+        error: (error  ) => {
+          console.error('Error:', error);  
+        }
+      });
+     
+    } else {
+      console.log('No token found. Please log in.');
+    }
+  
+}
+
+
+  toggleTheme(): void {
+    this.isDarkMode = !this.isDarkMode;
+    if (this.isDarkMode) {
+      localStorage.setItem('theme', 'dark');
+      this.renderer.setAttribute(document.body, 'data-bs-theme', 'dark');
+    } else {
+      localStorage.setItem('theme', 'light');
+      this.renderer.removeAttribute(document.body, 'data-bs-theme');
+    }
+  }
+
+  navigateToDashboard(): void {
+    this.router.navigate(['/dashboard-page']);
+  }
+
 }

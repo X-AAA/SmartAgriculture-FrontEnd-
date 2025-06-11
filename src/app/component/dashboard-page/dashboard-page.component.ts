@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { Chart, registerables } from 'chart.js';
-import { Farm, Field } from '../farm-page/farm.model';
-import { DashboardService } from '../../services/dashboard.service';
+import { Farm } from '../farm-page/farm.model';
 import { HttpHeaders } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { AuthService } from '../../services/auth.service';
+import { FarmService } from '../../services/farm.service';
 
 
 declare var bootstrap: any;
@@ -16,16 +16,32 @@ Chart.register(...registerables);
 @Component({
   selector: 'app-dashboard-page',
   standalone: true,
-  imports: [RouterModule, ReactiveFormsModule,FormsModule,CommonModule],
+  imports: [RouterModule, ReactiveFormsModule, FormsModule, CommonModule],
   templateUrl: './dashboard-page.component.html',
   styleUrl: './dashboard-page.component.css'
 })
 export class DashboardPageComponent implements OnInit, AfterViewInit {
 
-openViewModal(id: number) {
-this.router.navigate(['/farm-page', id]);
+getStatusClass(status: number): string{
 
-}
+
+    if (status >= 0 && status <= 35) {
+      return 'danger';
+    } else if (status >= 36 && status <= 70) {
+      return 'warranty';
+    } else {
+      return 'active';
+    }
+  }
+
+
+
+ View(id: number , farmLocation: string) {
+ 
+    this.router.navigate(['/farm-page', id,farmLocation]);
+  
+
+} 
 logout() {
   this.authService.logout();
 }
@@ -46,10 +62,12 @@ logout() {
   farmToEditId: number | null = null;
 
   constructor(
-    private fb: FormBuilder,
-    private elementRef: ElementRef,
-    private renderer: Renderer2,
-    private readonly authService: DashboardService,private router: Router
+    private  fb: FormBuilder,
+    private  elementRef: ElementRef,
+    private  renderer: Renderer2,
+    private  farmService: FarmService,
+    private  authService: AuthService,
+    private  router: Router
   ) {}
 
   ngOnInit(): void {
@@ -63,6 +81,7 @@ logout() {
   }
 
   ngAfterViewInit(): void {
+    
     this.initializeCharts();
     // Initialize Bootstrap dropdowns if not handled automatically
     const dropdownElementList = [].slice.call(this.elementRef.nativeElement.querySelectorAll('.dropdown-toggle'));
@@ -71,15 +90,6 @@ logout() {
     });
 
 
-    const scroll = document.getElementById('scrollContainer');
-    if (scroll) {
-      scroll.addEventListener('wheel', (event: WheelEvent) => {
-        event.preventDefault();
-        // Adjust the scrolling speed by multiplying deltaY
-        scroll.scrollLeft += event.deltaY * 0.5;
-         // Reduced speed for smoother scrolling
-      }, { passive: false });
-    }
 
   }
 
@@ -129,20 +139,89 @@ logout() {
       this.renderer.removeAttribute(document.body, 'data-bs-theme');
     }
   }
+  accountCreationDate?: Date = new Date('2025-1-15');
+  generateDynamicChartData(accountCreationDate : Date) {
+    // --- 1. Define the complete data for a full year ---
 
-  initializeCharts(): void {
-    // Chart data (Example - replace with dynamic data)
-    const monthlyData = {
+ let data : number[] = [];
+ 
+
+    const fullYearData = {
       labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
       datasets: [{
-        label: 'Crop Yield (tons)',
-        data: [12, 19, 15, 17, 22, 25, 32, 38, 35, 30, 25, 20],
+        label: 'Farms Productivity(%)',
+        // This data should ideally be fetched from your backend for the CURRENT year.
+        data: data,
         borderColor: '#759a3b',
         backgroundColor: 'rgba(117, 154, 59, 0.1)',
         tension: 0.4,
         fill: true
       }]
     };
+  
+    // --- 2. Get current date and account creation date details ---
+    const now = new Date(); // e.g., June 11, 2025
+    const currentYear = now.getFullYear(); // 2025
+    const currentMonthIndex = now.getMonth(); // 5 (June)
+  
+    const creationYear = accountCreationDate.getFullYear();
+    const creationMonthIndex = accountCreationDate.getMonth();
+  
+    let startIndex = 0;
+  
+
+    if(creationMonthIndex < currentMonthIndex){
+      for(let i = creationMonthIndex; i < currentMonthIndex; i++){
+        data.push(this.getAverageHealth());
+      }
+
+     
+      
+
+    }
+    // --- 3. Determine the starting month for data visibility ---
+    if (creationYear < currentYear) {
+      // Account created in a previous year, start this year's chart from January.
+      startIndex = 0;
+    } else if (creationYear === currentYear) {
+      // Account created this year, start the data from the creation month.
+      startIndex = creationMonthIndex;
+    } else {
+      // Account creation is in the future, show no data.
+      return {
+        labels: fullYearData.labels,
+        datasets: [{ ...fullYearData.datasets[0],
+          data: new Array(12).fill(0)
+        }]
+      };
+    }
+  
+    // The chart should only show data up to the current month of the current year.
+    const endIndex = currentMonthIndex + 1;
+  
+    // --- 4. Generate the dynamic data array ---
+    // Create a new data array from the original data.
+    const dynamicData = fullYearData.datasets[0].data.map((value, index) => {
+      // Only include data if it's within the valid range (from creation month to current month).
+      if (index >= startIndex && index < endIndex) {
+        return value;
+      }
+      // Otherwise, the value for that month is 0.
+      return 0;
+    });
+  
+    // --- 5. Assemble and return the new chart data object ---
+    return {
+      labels: fullYearData.labels, // Always return all 12 month labels
+      datasets: [{
+        ...fullYearData.datasets[0], // Copy styling properties
+        data: dynamicData // Use the newly generated data array
+      }]
+    };
+  }
+
+  initializeCharts(): void {
+    // Chart data (Example - replace with dynamic data)    
 
     const cropData = {
       labels: ['Corn', 'Wheat', 'Soybeans', 'Vegetables', 'Fruits'],
@@ -165,7 +244,7 @@ logout() {
     if (productivityCtx) {
       new Chart(productivityCtx, {
         type: 'line',
-        data: monthlyData,
+        data: this.generateDynamicChartData(this.accountCreationDate!),
         options: {
           responsive: true,
           maintainAspectRatio: false,
@@ -212,6 +291,7 @@ logout() {
       });
     }
   }
+  
   farms:Farm[]=[]; 
   loadFarmData(): void {
     const token = this.authService.getToken();  // Retrieve the token from the service
@@ -220,7 +300,7 @@ logout() {
     if (token) {
       const headers = new HttpHeaders().set('Accept', '*/*').set('Authorization', `Bearer ${token}`);
 
-      this.authService.FarmInfo(headers).subscribe({
+      this.farmService.FarmInfo(headers).subscribe({
           next: (response) => {
             this.farms = response.map((farmData: any) => { // Assuming response is any[] for simplicity
               const farmInstance = new Farm(
@@ -228,10 +308,14 @@ logout() {
                 farmData.farmSize,
                 farmData.framLocation // Use the property name from the API response
               );
+           
+              
               (farmInstance as any).id = farmData.id;
               (farmInstance as any).overAllStatus = farmData.overAllStatus;
               (farmInstance as any).weatherReadings = farmData.weatherReadings;
               (farmInstance as any).fields = farmData.fields;
+ 
+
               return farmInstance;
             });
             this.applyFilters(this.filterFarmForm.value);
@@ -249,8 +333,6 @@ logout() {
 
   onAddFarmSubmit(): void {
 
-    
-
     const token = this.authService.getToken();
     if (token) {
       const headers = new HttpHeaders().set('Accept', '*/*').set('Authorization', `Bearer ${token}`);
@@ -264,43 +346,33 @@ logout() {
         this.addFarmForm.value.farmName,
         this.addFarmForm.value.farmSize,
         this.addFarmForm.value.farmLocation,
-        
        );
     
-       this.authService.AddFarm(newFarm,headers).subscribe({
-        next: (response) => {
-          console.log('Farm added successfully:', response);
-          this.farms.push(response);
-          this.applyFilters(this.filterFarmForm.value); // Re-apply filters
+       this.farmService.AddFarm(newFarm,headers).subscribe({
+        next: () => {  
 
-          const modalElement = document.getElementById('deleteFarmModal');
-          if (modalElement) {
-              const addModal = bootstrap.Modal.getInstance(modalElement);
-              if (addModal) {
-                  addModal.show();
-              
-              } else {
-                  console.warn('Could not get Bootstrap modal instance to hide it.');
-              }
-          } else {
-              console.warn('Could not find modal element with ID deleteFarmModal to hide it.');
+
+         this.farmService.getFarmWeatherById(newFarm.getId(), newFarm.getFarmLocation(),headers).subscribe({
+          next: (weatherReadings:any) => {
+            newFarm.setWeatherReadings(weatherReadings);
           }
-        
-    
+        });
+
+          console.log('Farm added successfully');
+
         },
         error: (error) => {
           console.error('Error adding farm:', error);
           this.errorMessage = error?.error?.message ?? 'Farm adding failed. Please try again.';
-
-
-          
       
         }
       });
 
+
+
     
       this.farms.push(newFarm);
-      this.applyFilters(this.filterFarmForm.value); // Re-apply filters
+      this.applyFilters(this.filterFarmForm.value);
       this.addFarmForm.reset();
     } 
 
@@ -322,7 +394,7 @@ logout() {
           .set('Authorization', `Bearer ${token}`);
   
         // Use the new getFarmById service method
-        this.authService.getFarmById(farmId, headers).subscribe({
+        this.farmService.getFarmById(farmId, headers).subscribe({
           next: (farm) => {
             if (farm) {
               this.farmToEditId = farmId;
@@ -370,7 +442,7 @@ logout() {
 );
 
        // Use the updateFarm service method with PATCH
-      this.authService.EditFarm(this.farmToEditId!, updatedData, headers).subscribe({
+      this.farmService.EditFarm(this.farmToEditId!, updatedData, headers).subscribe({
         next: (updatedFarm) => {
           console.log('Farm updated successfully:', updatedFarm);
           this.errorMessage = null;
@@ -431,36 +503,14 @@ logout() {
 
 
     this.farmToDeleteId = farmId;
-    this.errorMessage = null; // Clear previous errors
-    this.farmToDeleteId = null; // Reset name
-
-    // *** Optional: Fetch farm name for better confirmation message ***
+    this.errorMessage = null; 
+    this.farmToDeleteId = null; 
     const token = this.authService.getToken();
     if (token) {
-      const headers = new HttpHeaders()
-        .set('Accept', '*/*')
-        .set('Authorization', `Bearer ${token}`);
-      this.authService.getFarmById(farmId, headers).subscribe({
-        next: (farm) => {
-          if (farm) {
-          this.farmToDeleteId = farmId; // Or farm.farmName
-          // Now trigger the modal display (e.g., using data-bs-toggle or programmatically)
-          console.log(`Prepared to delete farm: ${this.farmToDeleteId} (ID: ${farmId})`);
-          // Example: If using Bootstrap's JS API:
-          // const deleteModal = new bootstrap.Modal(document.getElementById('deleteFarmModal'));
-          // deleteModal.show();
-        }},
-        error: (err) => {
-          console.error('Error fetching farm name for delete confirmation:', err);
-          // Still set the ID and open the modal, but without the name
-          console.log(`Prepared to delete farm ID: ${farmId}`);
-          // Trigger modal display here too
-        }
-      });
+        this.farmToDeleteId = farmId;
     } else {
       this.errorMessage = 'Authentication token not found. Please log in.';
       console.log('No token found. Cannot fetch farm name or delete.');
-      // Optionally prevent modal opening if token is required even for name display
     }
 
     }
@@ -474,14 +524,14 @@ logout() {
     const token = this.authService.getToken();
     if (token) {
       const headers = new HttpHeaders()
-        .set('Accept', '*/*') // Usually Accept is needed for the response
+        .set('Accept', '*/*') 
         .set('Authorization', `Bearer ${token}`);
 
-      this.isLoading = true; // Indicate loading state
+      this.isLoading = true; 
       this.errorMessage = null;
 
       // Call the DeleteFarm service method
-      this.authService.DeleteFarm(this.farmToDeleteId!, headers).subscribe({
+      this.farmService.DeleteFarm(this.farmToDeleteId!, headers).subscribe({
         next: () => {
           console.log(`Farm with ID ${this.farmToDeleteId} deleted successfully.`);
           this.isLoading = false;
@@ -528,6 +578,9 @@ logout() {
     if (validFarms.length === 0) return 0;
     return validFarms.reduce((sum, farm) => sum + (farm.getOverAllStatus() || 0), 0) / validFarms.length;
   }
+
+
+  
   
 }
 

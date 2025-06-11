@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule, } from '@angular/router';
-import { LoginService } from '../../services/login.service';
+import { AuthService } from '../../services/auth.service';
 import { CommonModule, NgIf } from '@angular/common';
 import {  UserCredential } from './credential.modul';
-import { HttpHeaders } from '@angular/common/http';
 
 
 @Component({
@@ -33,7 +32,7 @@ throw new Error('Method not implemented.');
   errorMessage: string | null = null;
   successMessage: string | null = null;
 
-  constructor( private readonly router:Router ,private readonly loginService: LoginService, private readonly fb: FormBuilder) {
+  constructor( private readonly router:Router ,private readonly loginService: AuthService, private readonly fb: FormBuilder) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required] ],
