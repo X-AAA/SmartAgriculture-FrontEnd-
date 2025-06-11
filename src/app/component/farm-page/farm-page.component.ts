@@ -20,9 +20,43 @@ import { SoilDataService } from '../../services/soilData.service';
 })
 
 export class FarmPageComponent implements OnInit, AfterViewInit {
+
+  addFieldForm!: FormGroup;
+  addSoilDataForm!: FormGroup;
+
   display: boolean = false;
+  selected: boolean = false;
+  isLoading: boolean = false;
+  isDarkMode: boolean = false;
+
+  soilDataItems:any[]=[];
+  recommendations: any[] = [];
+  fields : Field[] = [];
+
+  selectedField: Field | null = null;
+  weatherReadings!: WeatherReadings;
+ 
+  
+  errorMessage: string | null = null;
+  successMessage: string | null = null;
+  farmLocation: string | null = null;
+
+  farmId: number | null = null ;
+  fieldToDeleteId: number | null = null;
+ 
 
 
+  constructor(
+    private authService: AuthService,
+    private fieldService: FieldService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private fb: FormBuilder,
+    private elementRef: ElementRef,
+    private renderer: Renderer2,
+    private farmService: FarmService,
+    private soilDataService: SoilDataService
+  ) {}
 
 onAddSoilDataSubmit() {
   const token = this.authService.getToken();
@@ -66,9 +100,6 @@ console.log(this.successMessage);
 }
   }
 }
-
-
-soilDataItems:any[]=[];
 
 getSoilDataItems() {
   const token = this.authService.getToken();
@@ -147,11 +178,7 @@ getSoilDataItems() {
 
 
 }
-  
 
-selected: boolean = false;
-
-selectedField: Field | null = null;
 selectField(fieldId: number) {
   const token = this.authService.getToken();
   if (token) {
@@ -324,42 +351,13 @@ logout() {
 throw new Error('Method not implemented.');
 }
   
-
-recommendations: any[] = [];
-
-
-  addFieldForm!: FormGroup;
-  addSoilDataForm!: FormGroup;
-  isDarkMode: boolean = false;
-  errorMessage: string | null = null;
-  successMessage: string | null = null;
-  isLoading: boolean = false;
-  fieldToDeleteId: number | null = null;
-
-
-
-  constructor(
-    private authService: AuthService,
-    private fieldService: FieldService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private fb: FormBuilder,
-    private elementRef: ElementRef,
-    private renderer: Renderer2,
-    private farmService: FarmService,
-    private soilDataService: SoilDataService
-  ) {}
- /*  ngOnDestroy(): void {
-   this.routeSub?.unsubscribe();
-  }
- */
-  ngOnInit(): void {
+ngOnInit(): void {
     this.initializeForms();
     this.loadThemePreference();
   this.loadFieldData();
-  }
+}
 
-  ngAfterViewInit(): void {
+ngAfterViewInit(): void {
     // Initialize Bootstrap dropdowns
     const dropdownElementList = [].slice.call(this.elementRef.nativeElement.querySelectorAll('.dropdown-toggle'));
     dropdownElementList.map(function (dropdownToggleEl) {
@@ -371,9 +369,9 @@ recommendations: any[] = [];
     tooltipTriggerList.map(function (tooltipTriggerEl) {
       return new bootstrap.Tooltip(tooltipTriggerEl);
     });
-  }
+}
 
-  initializeForms(): void {
+initializeForms(): void {
     this.addFieldForm = this.fb.group({
       fieldName: ['', Validators.required],
       fieldSize: [null, [Validators.required, Validators.min(1)]],
@@ -389,9 +387,9 @@ recommendations: any[] = [];
       soilMoisture: [null, [Validators.required, Validators.min(0), Validators.max(100)]],
       soilOrganicMatter: [null, [Validators.required, Validators.min(0), Validators.max(100)]]
     });
-  }
+}
 
-  loadThemePreference(): void {
+loadThemePreference(): void {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark') {
       this.isDarkMode = true;
@@ -400,13 +398,7 @@ recommendations: any[] = [];
       this.isDarkMode = false;
       this.renderer.removeAttribute(document.body, 'data-bs-theme');
     }
-  }
-
-fields : Field[] = [];
-farmId: number | null = null ;
-farmLocation: string | null = null;
-weatherReadings!: WeatherReadings;
-
+}
 
 loadFieldData(): void {
  
@@ -462,8 +454,7 @@ loadFieldData(): void {
   
 }
 
-
-  toggleTheme(): void {
+toggleTheme(): void {
     this.isDarkMode = !this.isDarkMode;
     if (this.isDarkMode) {
       localStorage.setItem('theme', 'dark');
@@ -472,10 +463,10 @@ loadFieldData(): void {
       localStorage.setItem('theme', 'light');
       this.renderer.removeAttribute(document.body, 'data-bs-theme');
     }
-  }
+}
 
-  navigateToDashboard(): void {
+navigateToDashboard(): void {
     this.router.navigate(['/dashboard-page']);
-  }
+}
 
 }
