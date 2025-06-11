@@ -223,12 +223,24 @@ getSoilOrganicMatter(): number {
 
 }
 
-export interface Recommendation {
-    id: number;
-    name: string;
-    yield: number;
-    health: number;
-    status: string;
+export class Recommendation {
+    parameter: number;
+    value: number;
+    advice: string;
+    applied: boolean;
+
+    constructor(
+        parameter: number,
+        value: number,
+        advice: string,
+        applied: boolean
+    ){
+        this.parameter = parameter;
+        this.value = value;
+        this.advice = advice;
+        this.applied = false;
+    }
+    
 
 }
 

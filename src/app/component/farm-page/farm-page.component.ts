@@ -3,13 +3,14 @@ import { AfterViewInit, Component, ElementRef, OnInit, Renderer2 } from '@angula
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Farm, Field, SoilData } from './farm.model';
+import { Farm, Field, Recommendation, SoilData } from './farm.model';
 import { AuthService } from '../../services/auth.service';
 import { FieldService } from '../../services/field.service';
 import { HttpHeaders } from '@angular/common/http';
 import { WeatherReadings } from './farm.model';
 import { FarmService } from '../../services/farm.service';
 import { SoilDataService } from '../../services/soilData.service';
+import { RecommendationService } from '../../services/recommendation.service';
 
 @Component({
   selector: 'app-farm-page',
@@ -49,14 +50,15 @@ export class FarmPageComponent implements OnInit, AfterViewInit {
 
 
   constructor(
-    private authService: AuthService,
-    private fieldService: FieldService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private fb: FormBuilder,
-    private elementRef: ElementRef,
-    private renderer: Renderer2,
-    private farmService: FarmService,
+    private readonly authService: AuthService,
+    private readonly fieldService: FieldService,
+    private readonly recommendationService: RecommendationService,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly fb: FormBuilder,
+    private readonly elementRef: ElementRef,
+    private readonly renderer: Renderer2,
+    private readonly farmService: FarmService,
     private soilDataService: SoilDataService
   ) {}
 
@@ -204,7 +206,9 @@ selectField(fieldId: number) {
             
           this.selectedField = fieldInstance; // Assuming response is any[] for simplicity
           this.getSoilDataItems();
+          this.getRecommendation();
         
+          
         
 
       },
@@ -336,17 +340,47 @@ deleteField(): void {
     }
 }
   
-applyRecommendation(arg0: any) {
-throw new Error('Method not implemented.');
+applyRecommendation(rec: Recommendation) {
+  this.recommendations.splice(this.recommendations.indexOf(rec), 1);   
+
 }
 
-getMostImportantRecommendation(): any {
-  return {
-    id: 1,
-    title: 'Sample Recommendation 1',
-    description: 'This is a sample recommendation',
-    applied: false
-  };
+getRecommendation(): any {
+
+  const token = this.authService.getToken();
+  if (token) {
+    const headers = new HttpHeaders()
+      .set('Accept', '*/*')
+      .set('Authorization', `Bearer ${token}`);
+
+    // Use the new getFarmById service method
+    this.recommendationService.getRecommendations(this.farmId!,this.selectedField!.getId(), headers).subscribe({
+      next: (recommendation: any[] ) => {
+        this.display = false;
+        this.recommendations = recommendation.map((rec: any) => ({
+          value: rec.value,
+          advice: rec.advice,
+          parameter: rec.parameter,
+          applied: rec.applied
+        }));
+        this.selectedField!.setRecommendation(this.recommendations);
+       
+
+      },
+      error: (error) => {
+        this.display = true;
+        console.error('Error fetching recommendations:', error);
+        this.errorMessage = error?.error?.message ?? 'Failed to load recommendations. Please try again.';
+      }
+    });
+    
+  } else {
+    this.selected = false;
+    console.log('No token found. Please log in.');
+    this.errorMessage = 'Authentication token not found. Please log in.';
+  }
+
+ 
 }
 
 logout() {
