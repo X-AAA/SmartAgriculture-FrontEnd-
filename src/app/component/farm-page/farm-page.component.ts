@@ -210,21 +210,20 @@ selectField(fieldId: number) {
           this.selectedField = fieldInstance; // Assuming response is any[] for simplicity
           this.getSoilDataItems();
           this.get_recommendation();
-        
-          
+    
           
           
         
 
       },
       error: (error) => {
+     
         console.error('Error fetching field details:', error);
         this.errorMessage = error?.error?.message ?? 'Failed to load field details. Please try again.';
       }
     });
     
   } else {
-    this.selected = false;
     console.log('No token found. Please log in.');
     this.errorMessage = 'Authentication token not found. Please log in.';
   }
@@ -375,7 +374,7 @@ get_recommendation() {
           applied: rec.applied
         }));
         this.selectedField.setRecommendation(recommendations);
-   
+   this.recommendations = this.selectedField.getRecommendation();
       },
       error: (error) => {
         this.display = true;
@@ -394,7 +393,7 @@ get_recommendation() {
 }
 
 logout() {
-throw new Error('Method not implemented.');
+this.authService.logout();
 }
   
 ngOnInit(): void {
@@ -448,7 +447,7 @@ loadThemePreference(): void {
 
 loadFieldData(): void {
  
-  const token = this.authService.getToken();  // Retrieve the token from the service
+  const token = this.authService.getToken();  
     this.isLoading = false;
     if (token) {
       const headers = new HttpHeaders().set('Accept', '*/*').set('Authorization', `Bearer ${token}`);

@@ -11,6 +11,8 @@
   --farm-text-on-dark-bg: #ebfcec; /* Text on dark elements */
   --farm-accent-color: #759a3b; /* Green accent - updated to match logo */
   --farm-border-color: #e9ecef; /* Light border */
+  --field-bg-color: #47614c;
+  --farm-dashboard-link-color: #bcbfc3cb;
 }
 
 /* Apply dark theme variables when body has the attribute */
@@ -27,6 +29,8 @@
     --farm-border-color: #40454a;
     --farm-delete-hover-color: #c13a3a;
     --farm-unified-field-bg: #282c34;
+    --field-bg-color: #282c34;
+    --farm-dashboard-link-color: #28342e;
 
 
 }
@@ -198,7 +202,7 @@
   font-size: 1.8rem;
   font-weight: 700;
   margin-bottom: 0.75rem;
-  color: var(--farm-accent-color);
+  color: var(--farm-text-primary);
   letter-spacing: -0.5px;
   position: relative;
   display: inline-block;
@@ -213,7 +217,7 @@
 }
 .subsection-title i {
   margin-right: 10px;
-  color: var(--farm-accent-color);
+  color: var(--farm-text-primary);
 }
 
 /* Welcome Section Wrapper Card */
@@ -231,6 +235,52 @@
 
 
 /* Farm Name Header */
+/* Styles for the container holding multiple farm cards (if applicable) */
+.farm-details-section {
+  display: flex; /* Arranges cards side-by-side */
+  flex-wrap: wrap; /* Allows cards to wrap to the next line on smaller screens */
+  gap: 20px; /* Space between individual farm cards */
+  padding: 20px; /* Optional: padding around the entire section */
+  justify-content: flex-start; /* Aligns cards to the start of the container */
+}
+
+/* Styles for the individual farm detail card */
+.farm-details-container {
+  background-color: #386641; /* Dark green background color */
+  color: white; /* White text color */
+  border-radius: 10px; /* Rounded corners for the card */
+  padding: 20px; /* Internal padding within the card */
+  width: 300px; /* Example width, adjust as needed to fit your layout */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  /* You might want to add min-width or max-width for responsiveness */
+}
+
+/* Styles for the content block within the card */
+.farm-details {
+  /* The d-flex flex-column Bootstrap classes already handle vertical stacking */
+  /* Add some spacing between the lines of text */
+  gap: 8px; /* Space between farm name, location, and size */
+}
+
+/* Styles for the farm name (the first span) */
+.farm-details span:first-child {
+  font-size: 1.4em; /* Larger font size for the farm name */
+  font-weight: bold; /* Bold font weight for the farm name */
+  margin-bottom: 5px; /* Space below the farm name */
+}
+
+/* Styles for the location and size lines */
+.farm-details span {
+  font-size: 1em; /* Standard font size for location and size */
+  display: flex; /* Use flexbox to align icon and text horizontally */
+  align-items: center; /* Vertically center the icon and text */
+}
+
+/* Styles for the Font Awesome icons */
+.farm-details span i {
+  color: white; /* Ensure icons are white */
+  /* The me-2 Bootstrap class already adds margin-right to the icon */
+}
 
 
 
@@ -240,13 +290,16 @@
 }
 .dashboard-link {
   color: var(--farm-text-primary);
+  background-color: var(--farm-dashboard-link-color);
+  
+  border-radius: 8px;
   font-size: 1.1rem;
   text-decoration: none;
   font-weight: 500;
   transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
-
+padding: 8px 16px;
 }
 .dashboard-link:hover {
   color: var(--farm-text-primary);
@@ -321,7 +374,7 @@
   flex-direction: column;
   justify-content: center;
   text-align: center;
-  background-color: var(--field-card-bg);
+  background-color: var(--field-bg-color);
 }
 .field-item-name {
   font-weight: 600;
@@ -388,13 +441,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgba(117, 154, 59, 0.05);
+  background-color: var(--farm-border-color);
 }
 .chart-header h5 {
   margin: 0;
   font-weight: 700;
   font-size: 1.2rem;
-  color: var(--farm-accent-color);
+  color: var(--farm-text-primary);
   display: flex;
   align-items: center;
 }

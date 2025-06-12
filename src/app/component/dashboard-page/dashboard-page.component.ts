@@ -21,6 +21,10 @@ Chart.register(...registerables);
   styleUrl: './dashboard-page.component.css'
 })
 export class DashboardPageComponent implements OnInit, AfterViewInit {
+  
+navigateToProfile() {
+this.router.navigate(['/profile-page']);
+}
 
 getStatusClass(status: number): string{
 

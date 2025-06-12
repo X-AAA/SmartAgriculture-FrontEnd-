@@ -28,11 +28,10 @@ interface EditingState {
   styleUrl: './profile-page.component.css'
 })
 export class ProfilePageComponent implements OnInit {
-
+  isDarkMode: boolean = false;
 
   constructor(private readonly router: Router,
     private readonly fb: FormBuilder) { }
-
 
   profileForm!: FormGroup;
 
@@ -56,6 +55,39 @@ export class ProfilePageComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeForms();
+    this.loadThemePreference();
+    this.applyThemeToDocument();
+  }
+
+  loadThemePreference(): void {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      this.isDarkMode = true;
+    } else if (savedTheme === 'light') {
+      this.isDarkMode = false;
+    } else {
+      // Check system preference if no saved theme
+      this.isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+  }
+
+  saveThemePreference(): void {
+    const theme = this.isDarkMode ? 'dark' : 'light';
+    localStorage.setItem('theme', theme);
+  }
+
+  toggleDarkMode(): void {
+    this.isDarkMode = !this.isDarkMode;
+    this.saveThemePreference();
+    this.applyThemeToDocument();
+  }
+
+  private applyThemeToDocument(): void {
+    if (this.isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   }
 
   initializeForms(): void {
@@ -66,14 +98,23 @@ export class ProfilePageComponent implements OnInit {
       newPassword: new FormControl(this.passwords.newPassword, Validators.minLength(6)),
       confirmPassword: new FormControl(this.passwords.confirmPassword)
     });
-
-  
-}
+  }
 
   onProfilePictureChange(event: Event): void {
     const target = event.target as HTMLInputElement;
     const file = target.files?.[0];
     if (file) {
+      // Validate file type and size
+      if (!file.type.startsWith('image/')) {
+        alert('Please select a valid image file.');
+        return;
+      }
+      
+      if (file.size > 5 * 1024 * 1024) { // 5MB limit
+        alert('File size must be less than 5MB.');
+        return;
+      }
+
       const reader = new FileReader();
       reader.onload = (e) => {
         this.profileData.profilePicture = e.target?.result as string;
@@ -88,13 +129,23 @@ export class ProfilePageComponent implements OnInit {
       this.profileForm.get('username')?.setValue(this.profileData.username);
     } else if (field === 'email') {
       this.profileForm.get('email')?.setValue(this.profileData.email);
+    } else if (field === 'password') {
+      // Clear password fields when starting to edit
+      this.profileForm.get('currentPassword')?.setValue('');
+      this.profileForm.get('newPassword')?.setValue('');
+      this.profileForm.get('confirmPassword')?.setValue('');
     }
   }
 
   handleSave(field: keyof EditingState): void {
     if (field === 'username') {
       if (this.profileForm.get('username')?.valid) {
-        this.profileData.username = this.profileForm.get('username')?.value;
+        const newUsername = this.profileForm.get('username')?.value;
+        if (newUsername.trim().length < 3) {
+          alert('Username must be at least 3 characters long.');
+          return;
+        }
+        this.profileData.username = newUsername.trim();
       } else {
         alert('Username is required.');
         return;
@@ -107,18 +158,33 @@ export class ProfilePageComponent implements OnInit {
         return;
       }
     } else if (field === 'password') {
+      const currentPass = this.profileForm.get('currentPassword')?.value;
       const newPass = this.profileForm.get('newPassword')?.value;
       const confirmPass = this.profileForm.get('confirmPassword')?.value;
-      if (newPass === confirmPass && this.profileForm.get('newPassword')?.valid) {
-        alert('Password updated successfully!');
-        this.passwords = { currentPassword: '', newPassword: '', confirmPassword: '' };
-        this.profileForm.get('currentPassword')?.setValue('');
-        this.profileForm.get('newPassword')?.setValue('');
-        this.profileForm.get('confirmPassword')?.setValue('');
-      } else {
-        alert('Passwords do not match or are too short (minimum 6 characters)');
+      
+      if (!currentPass) {
+        alert('Current password is required.');
         return;
       }
+      
+      if (!newPass || newPass.length < 6) {
+        alert('New password must be at least 6 characters long.');
+        return;
+      }
+      
+      if (newPass !== confirmPass) {
+        alert('New password and confirmation do not match.');
+        return;
+      }
+      
+      // Here you would typically call an API to verify current password and update
+      alert('Password updated successfully!');
+      
+      // Clear password fields after successful update
+      this.passwords = { currentPassword: '', newPassword: '', confirmPassword: '' };
+      this.profileForm.get('currentPassword')?.setValue('');
+      this.profileForm.get('newPassword')?.setValue('');
+      this.profileForm.get('confirmPassword')?.setValue('');
     }
     this.isEditing[field] = false;
   }
@@ -142,6 +208,33 @@ export class ProfilePageComponent implements OnInit {
 
   getInitials(): string {
     return this.profileData.username.charAt(0).toUpperCase();
+  }
+
+  // Utility method to get current theme as string
+  getCurrentTheme(): string {
+    return this.isDarkMode ? 'dark' : 'light';
+  }
+
+  // Method to check if a specific field is being edited
+  isFieldEditing(field: keyof EditingState): boolean {
+    return this.isEditing[field];
+  }
+
+  // Method to get form control errors for better error handling
+  getFieldError(fieldName: string): string | null {
+    const control = this.profileForm.get(fieldName);
+    if (control?.errors && control.touched) {
+      if (control.errors['required']) {
+        return `${fieldName} is required.`;
+      }
+      if (control.errors['email']) {
+        return 'Please enter a valid email address.';
+      }
+      if (control.errors['minlength']) {
+        return `${fieldName} must be at least ${control.errors['minlength'].requiredLength} characters long.`;
+      }
+    }
+    return null;
   }
 }
 
