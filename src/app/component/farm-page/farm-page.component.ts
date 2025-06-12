@@ -21,6 +21,9 @@ import { RecommendationService } from '../../services/recommendation.service';
 })
 
 export class FarmPageComponent implements OnInit, AfterViewInit {
+navigateToProfile() {
+this.router.navigate(['/profile-page']);
+}
 
   addFieldForm!: FormGroup;
   addSoilDataForm!: FormGroup;
@@ -34,8 +37,8 @@ export class FarmPageComponent implements OnInit, AfterViewInit {
   recommendations: any[] = [];
   fields : Field[] = [];
 
-  selectedField: Field | null = null;
-  weatherReadings!: WeatherReadings;
+  selectedField!: Field;
+  weatherReadings?: WeatherReadings;
  
   
   errorMessage: string | null = null;
@@ -44,7 +47,7 @@ export class FarmPageComponent implements OnInit, AfterViewInit {
   farmSize: number | null = null;
   farmName: string | null = null;
 
-  farmId: number | null = null ;
+  farmId!: number ;
   fieldToDeleteId: number | null = null;
  
 
@@ -206,8 +209,10 @@ selectField(fieldId: number) {
             
           this.selectedField = fieldInstance; // Assuming response is any[] for simplicity
           this.getSoilDataItems();
-          this.getRecommendation();
+          this.get_recommendation();
         
+          
+          
           
         
 
@@ -226,7 +231,10 @@ selectField(fieldId: number) {
 }
 
 getSelectedField(): Field | null {
-  return this.selectedField;
+  if (this.selectedField) {
+    return this.selectedField;
+  }
+  return null;
 }
 
 onAddFieldSubmit() {
@@ -341,11 +349,13 @@ deleteField(): void {
 }
   
 applyRecommendation(rec: Recommendation) {
-  this.recommendations.splice(this.recommendations.indexOf(rec), 1);   
-
+  this.recommendations.splice(this.recommendations.indexOf(rec), 1);
+  this.selectedField.setRecommendation(this.recommendations);
 }
 
-getRecommendation(): any {
+
+
+get_recommendation() {
 
   const token = this.authService.getToken();
   if (token) {
@@ -354,18 +364,18 @@ getRecommendation(): any {
       .set('Authorization', `Bearer ${token}`);
 
     // Use the new getFarmById service method
-    this.recommendationService.getRecommendations(this.farmId!,this.selectedField!.getId(), headers).subscribe({
+    this.recommendationService.getRecommendations(this.farmId,this.selectedField.getId(), headers).subscribe({
       next: (recommendation: any[] ) => {
+        
         this.display = false;
-        this.recommendations = recommendation.map((rec: any) => ({
+        const recommendations =  recommendation.map((rec: any) => ({
           value: rec.value,
           advice: rec.advice,
           parameter: rec.parameter,
           applied: rec.applied
         }));
-        this.selectedField!.setRecommendation(this.recommendations);
-       
-
+        this.selectedField.setRecommendation(recommendations);
+   
       },
       error: (error) => {
         this.display = true;
@@ -457,7 +467,6 @@ loadFieldData(): void {
     }
   });
 
-  
 
 
       this.fieldService.FieldInfo(this.farmId!,headers).subscribe({

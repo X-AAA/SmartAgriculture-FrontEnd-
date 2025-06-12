@@ -76,6 +76,7 @@ export class WeatherReadings {
     this.windSpeed = windSpeed;
     this.precipitation = precipitation;
   }
+  
     
 }
 
@@ -86,7 +87,7 @@ export class Field {
     private cropType: string;
     private fieldCondition: number;
     private soilData?: SoilData;
-    private recommendation ?:Recommendation[];
+    private recommendation!:Recommendation[];
 
     constructor(
         fieldName: string,
@@ -129,7 +130,7 @@ this.id = 0;
         return this.soilData;
     }
 
-    public getRecommendation(): Recommendation[] | undefined {
+    public getRecommendation(): Recommendation[]  {
         return this.recommendation;
     }
 

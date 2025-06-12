@@ -1,13 +1,6 @@
-<!-- 
-  This is the main HTML template for the Farm Page component.
-  It has been converted from the original static HTML to a dynamic Angular template.
-  - Data binding (`{{ }}`, `[property]`) is used to display component data.
-  - Structural directives like `*ngFor` are used to render lists of items (fields, soil data, recommendations).
-  - Event binding (`(click)`) is used to handle user interactions.
-  - Reactive forms (`[formGroup]`, `formControlName`, `(ngSubmit)`) are implemented for the "Add Field" and "Add Soil Data" modals.
--->
+
 <div class="app-container" [class.dark-mode]="isDarkMode">
-  <!-- Top Navigation -->
+
   <nav class="top-nav">
     <div class="d-flex justify-content-between align-items-center w-100">
       <div class="logo">
@@ -39,8 +32,8 @@
             <img src="https://randomuser.me/api/portraits/men/42.jpg" alt="User" class="user-avatar">
           </button>
           <ul class="dropdown-menu profile-dropdown" aria-labelledby="profileDropdown">
-            <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i> Profile</a></li>
-            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i> Settings</a></li>
+            <li><a class="dropdown-item" (click)="navigateToProfile()"><i class="fas fa-user me-2"></i> Profile</a></li>
+         
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" (click)="logout()"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
           </ul>
@@ -133,19 +126,19 @@
                           <div class="weather-details">
                               <div class="detail-item">
                                   <i class="fas fa-thermometer-half"></i>
-                                  <span>Temperature:{{weatherReadings.temperature}}°</span>
+                                  <span>Temperature:{{weatherReadings?.temperature}}°</span>
                               </div>
                               <div class="detail-item">
                                   <i class="fas fa-tint"></i>
-                                  <span>Humidity: {{weatherReadings.humidity}}%</span>
+                                  <span>Humidity: {{weatherReadings?.humidity}}%</span>
                               </div>
                               <div class="detail-item">
                                   <i class="fas fa-wind"></i>
-                                  <span>Wind Speed: {{weatherReadings.windSpeed}} m/s</span>
+                                  <span>Wind Speed: {{weatherReadings?.windSpeed}} m/s</span>
                               </div>
                               <div class="detail-item">
                                   <i class="fas fa-cloud-showers-heavy"></i>
-                                  <span>Precipitation: {{weatherReadings.precipitation}} mm</span>
+                                  <span>Precipitation: {{weatherReadings?.precipitation}} mm</span>
                               </div>
                           </div>
                       </div>
@@ -187,7 +180,7 @@
                   <h3 class="subsection-title"><i class="fas fa-lightbulb text-warning me-2"></i> Smart Recommendations</h3>
               </div>
               <div class="d-flex justify-content-between align-items-center mb-3">
-                  <button class="btn btn-primary generate-recommendations-btn" (click)="getRecommendation()">
+                  <button class="btn btn-primary generate-recommendations-btn" (click)="get_recommendation()">
                       <i class="fas fa-magic me-2"></i> Generate Recommendations
                   </button>
                    <!-- VIEW ALL BUTTON: Changed from a link to a button -->
@@ -196,7 +189,7 @@
                   </button>
               </div>
               <div class="row" [ngClass]="{'d-none': display} " *ngIf="!display">
-                <div *ngFor="let rec of selectedField?.getRecommendation()" >
+                <div *ngFor="let rec of recommendations" >
                    <div class="col-12">
                      <div class="recommendation-card" [class.applied]="rec.applied">
                        <div class="recommendation-title">{{ rec.value }}</div>
